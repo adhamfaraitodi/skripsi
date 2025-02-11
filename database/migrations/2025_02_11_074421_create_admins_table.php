@@ -15,6 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('image_path');
+            $table->string('telephone_number',15);
+            $table->string('address',255);
+            $table->enum('role',['owner','karyawan']);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

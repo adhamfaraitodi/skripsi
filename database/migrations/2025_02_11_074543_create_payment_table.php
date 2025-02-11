@@ -11,8 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('payment', function (Blueprint $table) {
+        Schema::create('payments', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('order_id')->constrained('orders')->noActionOnDelete();
+            $table->string('order_code',15);
+            $table->string('transaction_id', 255);
+            $table->string('transaction_status', 55);
+            $table->enum('payment_type', ['credit_card', 'gopay', 'shopeepay', 'qris', 'cstore', 'bank_transfer', 'echannel']);
+            $table->bigInteger('gross_amount');
+            $table->timestamp('transaction_time')->nullable();
+            $table->timestamp('settlement_time')->nullable();
+            $table->string('va_number',50)->nullable();
+            $table->string('bank',50)->nullable();
+            $table->json('response_json')->nullable();
             $table->timestamps();
         });
     }
@@ -22,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('payment');
+        Schema::dropIfExists('payments');
     }
 };

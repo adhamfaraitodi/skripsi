@@ -11,8 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('menu', function (Blueprint $table) {
+        Schema::create('menus', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('admin_id')->constrained('admins')->noActionOnDelete();
+            $table->string('name',50);
+            $table->string('description',255);
+            $table->smallInteger('stock');
+            $table->smallInteger('sell');
+            $table->smallInteger('favorite');
+            $table->enum('role',['food','drink','addon']);
+            $table->bigInteger('price');
+            $table->bigInteger('discount');
             $table->timestamps();
         });
     }
@@ -22,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('menu');
+        Schema::dropIfExists('menus');
     }
 };

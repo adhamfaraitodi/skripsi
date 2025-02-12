@@ -11,6 +11,8 @@ class Menu extends Model
         'category_id',
         'name',
         'description',
+        'status',
+        'image_path',
         'favorite',
         'price',
         'discount'
@@ -25,7 +27,7 @@ class Menu extends Model
     }
     public function inventory()
     {
-        return $this->hasOne(Inventory::class,'menu_id');
+        return $this->hasMany(Inventory::class,'menu_id');
     }
     public function menuOrders()
     {

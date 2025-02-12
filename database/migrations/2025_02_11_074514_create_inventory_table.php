@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('menu_id')->constrained('menus')->noActionOnDelete();
             $table->smallInteger('quantity');
+            $table->smallInteger('current_quantity');
             $table->enum('transaction_type',['in','out']);
             $table->string('reason',255);
             $table->timestamps();

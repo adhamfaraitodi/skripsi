@@ -19,3 +19,4 @@
         <h3 class="text-xl font-semibold mb-4">Recent Activity</h3>
     </div>
 @endsection
+

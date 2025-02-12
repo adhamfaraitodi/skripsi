@@ -7,24 +7,25 @@ use Illuminate\Database\Eloquent\Model;
 class Menu extends Model
 {
     protected $fillable = [
-        'admin_id',
+        'user_id',
+        'category_id',
         'name',
         'description',
-        'stock',
-        'sell',
         'favorite',
-        'role',
         'price',
         'discount'
     ];
-    public function admin()
+    public function user()
     {
-        return $this->belongsTo(Admin::class,'admin_id');
+        return $this->belongsTo(User::class,'user_id');
     }
-
-    public function orders()
+    public function category()
     {
-        return $this->hasMany(Order::class, 'menu_id');
+        return $this->belongsTo(Category::class,'category_id');
+    }
+    public function inventory()
+    {
+        return $this->hasOne(Inventory::class,'menu_id');
     }
     public function menuOrders()
     {

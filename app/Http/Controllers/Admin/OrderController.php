@@ -9,17 +9,16 @@ use Illuminate\Http\Request;
 class OrderController extends Controller
 {
     public function index() {
-        $datas = Order::with(['menus.menu'])
-            ->whereIn('status_order', ['pending', 'paid'])
-            ->orderByRaw("FIELD(status_order, 'paid', 'pending')")
+        $datas = Order::with(['menus.menu','payment'])
+            ->whereIn('order_status', ['pending', 'paid'])
+            ->orderByRaw("FIELD(order_status, 'paid', 'pending')")
             ->get();
         return view('admin/order', compact('datas'));
     }
-
     public function history(){
         $datas = Order::with(['menus.menu'])
-            ->whereIn('status_order', ['success', 'cancelled'])
-            ->orderByRaw("FIELD(status_order, 'success', 'cancelled')")
+            ->whereIn('order_status', ['success', 'cancelled'])
+            ->orderByRaw("FIELD(order_status, 'success', 'cancelled')")
             ->get();
         return view('admin/history',compact('datas'));
     }

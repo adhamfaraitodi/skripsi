@@ -10,7 +10,7 @@ class Order extends Model
         'user_id',
         'table_id',
         'order_code',
-        'status_order',
+        'order_status',
         'gross_amount',
         'note'
     ];

@@ -12,8 +12,12 @@ class InventoryController extends Controller
     public function index(){
         $datas = Menu::with(['inventory' => function($query) {
             $query->latest()->limit(3);
-        }])->paginate(10);
-        return view('admin/inventory',compact('datas'));
+        }])->get();
+        $sold = Inventory::where('transaction_type', 'out')
+            ->selectRaw('menu_id, SUM(quantity) as total_sold')
+            ->groupBy('menu_id')
+            ->pluck('total_sold', 'menu_id');
+        return view('admin/inventory',compact('datas','sold'));
     }
     public function update(Request $request,$id){
         $request->validate([

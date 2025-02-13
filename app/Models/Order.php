@@ -24,12 +24,12 @@ class Order extends Model
     {
         return $this->belongsTo(Table::class,'table_id');
     }
-    public function menusOrder()
+    public function menus()
     {
         return $this->hasMany(MenuOrder::class, 'order_id');
     }
     public function payment()
     {
-        return $this->hasOne(Payment::class,'payment_id');
+        return $this->hasOne(Payment::class,'order_id');
     }
 }

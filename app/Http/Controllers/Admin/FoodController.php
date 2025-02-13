@@ -12,9 +12,7 @@ use Illuminate\Http\Request;
 class FoodController extends Controller
 {
     public function index(){
-        $datas = Menu::with('category', 'user')
-            ->orderBy('created_at')
-            ->paginate(10);
+        $datas = Menu::with('category', 'user')->get();
         return view('admin/food',compact('datas'));
     }
     public function create(){

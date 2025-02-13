@@ -16,12 +16,12 @@ class MenuOrder extends Model
         'discount',
         'subtotal'
     ];
-    public function menuOrders()
+    public function order()
     {
-        return $this->belongsToMany(MenuOrder::class, 'menu_id');
+        return $this->belongsTo(Order::class, 'order_id');
     }
-    public function menusOrder()
+    public function menu()
     {
-        return $this->belongsToMany(MenuOrder::class, 'order_id');
+        return $this->belongsTo(Menu::class, 'menu_id');
     }
 }

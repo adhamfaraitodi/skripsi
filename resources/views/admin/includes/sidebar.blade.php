@@ -27,7 +27,7 @@
     <div class="text-left text-sm mt-2 w-4/5 mx-auto text-gray-200 font-bold hidden" id="food-menu">
         <a href="{{ route('food.index') }}"><h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">Food list</h1></a>
         <a href="{{ route('category.index') }}"><h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">Food category</h1></a>
-        <a href="{{ route('inventory.index') }}"><h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">Food inventory</h1></a>
+        <a href="{{ route('food.inventory.index') }}"><h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">Food inventory</h1></a>
     </div>
 
     <!-- Dropdown: Order -->
@@ -42,8 +42,8 @@
         </div>
     </div>
     <div class="text-left text-sm mt-2 w-4/5 mx-auto text-gray-200 font-bold hidden" id="order-menu">
-        <h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">Order in</h1>
-        <h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">Order history</h1>
+        <a href="{{ route('order.index') }}"><h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">Order in</h1></a>
+        <a href="{{ route('order.history.index') }}"><h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">Order history</h1></a>
     </div>
 
     <!-- Dropdown: Table -->
@@ -58,7 +58,7 @@
         </div>
     </div>
     <div class="text-left text-sm mt-2 w-4/5 mx-auto text-gray-200 font-bold hidden" id="table-menu">
-        <h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">Table list</h1>
+        <a href="{{ route('table.index') }}"><h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">Table list</h1></a>
     </div>
 
     <!-- Dropdown: Report -->
@@ -73,24 +73,25 @@
         </div>
     </div>
     <div class="text-left text-sm mt-2 w-4/5 mx-auto text-gray-200 font-bold hidden" id="report-menu">
-        <h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">Sales report</h1>
-        <h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">Inventory report</h1>
+        <a href="{{ route('sales.index') }}"><h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">Sales report</h1></a>
+        <a href="{{ route('inventory.index') }}"><h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">Inventory report</h1></a>
+        <a href="{{ route('financial.index') }}"><h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">Financial report</h1></a>
     </div>
 
     <!-- Dropdown: Staff -->
     <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
-         onclick="dropdown('staff-menu', 'report-arrow')">
+         onclick="dropdown('staff-menu', 'staff-arrow')">
         <i class="ph ph-users-three"></i>
         <div class="flex justify-between w-full items-center">
             <span class="text-[15px] ml-4 text-gray-200 font-bold">Staff</span>
-            <span class="text-sm" id="report-arrow">
+            <span class="text-sm" id="staff-arrow">
                 <i class="ph ph-caret-down"></i>
             </span>
         </div>
     </div>
     <div class="text-left text-sm mt-2 w-4/5 mx-auto text-gray-200 font-bold hidden" id="staff-menu">
-        <h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">Staff list</h1>
-        <h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">Staff register</h1>
+        <a href="{{ route('staff.index') }}"><h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">Staff list</h1></a>
+        <a href="{{ route('staff.create') }}"><h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">Staff register</h1></a>
     </div>
 
     <form method="POST" action="{{ route('logout') }}" class="inline">

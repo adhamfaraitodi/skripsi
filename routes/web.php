@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Admin\TableController;
+use App\Http\Controllers\Auth\StaffRegisterController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -51,7 +52,12 @@ Route::prefix('superadmin')->middleware(['auth','authorized','verified'])->group
     Route::get('financial-report',[ReportController::class,'financial'])->name('financial.index');
     //staff routes related
     Route::get('staff',[StaffController::class,'index'])->name('staff.index');
-    Route::get('staff/register',[StaffController::class,'create'])->name('staff.create');
+    Route::get('staff/register',[StaffRegisterController::class,'create'])->name('staff.create');
+    Route::post('staff/register',[StaffRegisterController::class,'store'])->name('staff.store');
+    Route::get('staff/edit/{id}',[StaffController::class,'edit'])->name('staff.edit');
+    Route::post('staff/update/{id}',[StaffController::class,'update'])->name('staff.store');
+    Route::delete('staff/delete/{id}',[StaffController::class,'delete'])->name('staff.delete');
+
 });
 
 Route::middleware('auth')->group(function () {

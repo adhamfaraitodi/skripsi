@@ -15,7 +15,13 @@ class StaffController extends Controller
             ->get();
         return view('admin.staff', compact('datas'));
     }
-    public function create(){
-        return view('auth/register-staff');
+    public function edit($id){
+
+    }
+    public function update(Request $request,$id){
+
+    }
+    public function delete($id){
+
     }
 }

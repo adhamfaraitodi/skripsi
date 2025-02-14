@@ -72,21 +72,20 @@
         <a href="{{ route('financial.index') }}"><h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">Financial report</h1></a>
     </div>
 
-    <!-- Dropdown: Staff -->
-    <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
-         onclick="dropdown('staff-menu', 'staff-arrow')">
-        <i class="ph ph-users-three"></i>
-        <div class="flex justify-between w-full items-center">
-            <span class="text-[15px] ml-4 text-gray-200 font-bold">Staff</span>
-            <span class="text-sm" id="staff-arrow">
-                <i class="ph ph-caret-down"></i>
-            </span>
-        </div>
-    </div>
-    <div class="text-left text-sm mt-2 w-4/5 mx-auto text-gray-200 font-bold hidden" id="staff-menu">
-        <a href="{{ route('staff.index') }}"><h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">Staff Management</h1></a>
-        <a href="{{ route('staff.create') }}"><h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">Staff register</h1></a>
-    </div>
+    @auth
+        @if(auth()->user()->role_id == 1)
+            {{-- Single: Staff --}}
+            <a href="{{ route('staff.index') }}">
+                <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
+                    <i class="ph ph-users-three"></i>
+                    <div class="flex justify-between w-full items-center">
+                        <span class="text-[15px] ml-4 text-gray-200 font-bold">Staff</span>
+                    </div>
+                </div>
+            </a>
+        @endif
+    @endauth
+
     {{--    Single: Profile--}}
     <a href="{{ route('profile.edit') }}">
     <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
@@ -96,6 +95,7 @@
         </div>
     </div>
     </a>
+    {{--    Single: logout--}}
     <form method="POST" action="{{ route('logout') }}" class="inline">
         @csrf
         <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white" onclick="event.preventDefault(); this.closest('form').submit();">

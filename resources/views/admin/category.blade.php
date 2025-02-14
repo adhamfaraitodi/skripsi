@@ -4,7 +4,7 @@
     <div class="p-6">
         <div class="mb-6 flex justify-between items-center">
             <a href="{{ route('category.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
-                <i class="bi bi-plus-lg mr-2"></i>Add New Category
+                <i class="ph ph-plus mr-2"></i>Add New Category
             </a>
         </div>
         <div class="bg-white rounded-lg shadow-md mb-6">

@@ -3,13 +3,13 @@
 @section('content')
     <div class="p-6">
         <div class="mb-6 flex items-center space-x-4">
-            <h3 class="text-lg font-semibold text-gray-700">Put How Many Table:</h3>
+            <h3 class="text-lg font-semibold text-gray-700">Put Total Table:</h3>
             <form action="{{ route('table.create') }}" method="POST" class="flex items-center">
                 @csrf
                 <input type="number" name="total" min="1" required
                        class="border rounded-md px-2 py-1 w-20 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <button type="submit" class="ml-2 text-green-600 hover:text-green-900">
-                    <i class="ph ph-arrows-clockwise text-lg"></i>
+                    <i class="ph ph-list-plus text-lg"></i>
                 </button>
             </form>
         </div>

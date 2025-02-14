@@ -23,6 +23,7 @@ return new class extends Migration
             $table->bigInteger('discount');
             $table->tinyInteger('status');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

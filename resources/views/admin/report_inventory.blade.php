@@ -1,5 +1,5 @@
 @extends('admin.layouts.app')
-@section('page_title', 'Sales Report')
+@section('page_title', 'Inventory Report')
 @section('content')
     <div class="container mx-auto px-4">
         <div class="bg-white shadow-md rounded-lg p-6">

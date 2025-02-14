@@ -122,7 +122,7 @@
                     "responsive": true,
                     "pagingType": "simple",
                     "language": {
-                        "search": "Search inventory:",
+                        "search": "Search Food:",
                         "lengthMenu": "Show _MENU_ items per page",
                         "zeroRecords": "No matching items found",
                         "info": "Showing _START_ to _END_ of _TOTAL_ items",

@@ -50,7 +50,7 @@
                                     @foreach($data->menus as $menuOrder)
                                         <div class="px-4 py-2 bg-white rounded-md mb-2 shadow-sm border border-gray-200">
                                             <p class="text-sm text-gray-800 font-semibold">
-                                                {{ $menuOrder->created_at->format('Y-m-d H:i:s') }} -
+                                                {{ $menuOrder->created_at->format('Y-m-d H:i:s') ?? 'N/A'}} -
                                                 {{ $menuOrder->quantity }} x {{ $menuOrder->menu->name }}
                                             </p>
                                             <p class="text-sm text-gray-500 italic">Price: Rp {{ number_format($menuOrder->price, 2) }}</p>

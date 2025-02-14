@@ -46,21 +46,15 @@
         <a href="{{ route('order.history.index') }}"><h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">Order history</h1></a>
     </div>
 
-    <!-- Dropdown: Table -->
-    <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
-         onclick="dropdown('table-menu', 'table-arrow')">
-        <i class="ph ph-desk"></i>
-        <div class="flex justify-between w-full items-center">
-            <span class="text-[15px] ml-4 text-gray-200 font-bold">Table</span>
-            <span class="text-sm" id="table-arrow">
-                <i class="ph ph-caret-down"></i>
-            </span>
+    <!-- Single: Table -->
+    <a href="{{ route('table.index') }}">
+        <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
+            <i class="ph ph-desk"></i>
+            <div class="flex justify-between w-full items-center">
+                <span class="text-[15px] ml-4 text-gray-200 font-bold">Table</span>
+            </div>
         </div>
-    </div>
-    <div class="text-left text-sm mt-2 w-4/5 mx-auto text-gray-200 font-bold hidden" id="table-menu">
-        <a href="{{ route('table.index') }}"><h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">Table list</h1></a>
-    </div>
-
+    </a>
     <!-- Dropdown: Report -->
     <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
          onclick="dropdown('report-menu', 'report-arrow')">
@@ -90,10 +84,18 @@
         </div>
     </div>
     <div class="text-left text-sm mt-2 w-4/5 mx-auto text-gray-200 font-bold hidden" id="staff-menu">
-        <a href="{{ route('staff.index') }}"><h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">Staff list</h1></a>
+        <a href="{{ route('staff.index') }}"><h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">Staff Management</h1></a>
         <a href="{{ route('staff.create') }}"><h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">Staff register</h1></a>
     </div>
-
+    {{--    Single: Profile--}}
+    <a href="{{ route('profile.edit') }}">
+    <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
+        <i class="ph ph-user-circle-gear"></i>
+        <div class="flex justify-between w-full items-center">
+            <span class="text-[15px] ml-4 text-gray-200 font-bold">Profile</span>
+        </div>
+    </div>
+    </a>
     <form method="POST" action="{{ route('logout') }}" class="inline">
         @csrf
         <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white" onclick="event.preventDefault(); this.closest('form').submit();">

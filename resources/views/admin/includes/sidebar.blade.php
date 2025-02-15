@@ -28,6 +28,7 @@
         <a href="{{ route('food.index') }}"><h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">Food list</h1></a>
         <a href="{{ route('category.index') }}"><h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">Food category</h1></a>
         <a href="{{ route('food.inventory.index') }}"><h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">Food inventory</h1></a>
+        <a href="{{ route('food.trash.index') }}"><h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">Food trash</h1></a>
     </div>
 
     <!-- Dropdown: Order -->
@@ -74,15 +75,30 @@
 
     @auth
         @if(auth()->user()->role_id == 1)
-            {{-- Single: Staff --}}
-            <a href="{{ route('staff.index') }}">
-                <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
-                    <i class="ph ph-users-three"></i>
-                    <div class="flex justify-between w-full items-center">
-                        <span class="text-[15px] ml-4 text-gray-200 font-bold">Staff</span>
-                    </div>
+{{--            --}}{{-- Single: Staff --}}
+{{--            <a href="{{ route('staff.index') }}">--}}
+{{--                <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">--}}
+{{--                    <i class="ph ph-users-three"></i>--}}
+{{--                    <div class="flex justify-between w-full items-center">--}}
+{{--                        <span class="text-[15px] ml-4 text-gray-200 font-bold">Staff</span>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </a>--}}
+            <!-- Dropdown: Staff -->
+            <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
+                 onclick="dropdown('staff-menu', 'staff-arrow')">
+                <i class="ph ph-users-three"></i>
+                <div class="flex justify-between w-full items-center">
+                    <span class="text-[15px] ml-4 text-gray-200 font-bold">Staff</span>
+                    <span class="text-sm" id="staff-arrow">
+                <i class="ph ph-caret-down"></i>
+            </span>
                 </div>
-            </a>
+            </div>
+            <div class="text-left text-sm mt-2 w-4/5 mx-auto text-gray-200 font-bold hidden" id="staff-menu">
+                <a href="{{ route('staff.index') }}"><h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">Staff Management</h1></a>
+                <a href="{{ route('staff.trash.index') }}"><h1 class="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">Staff Trash</h1></a>
+            </div>
         @endif
     @endauth
 

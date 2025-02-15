@@ -96,9 +96,6 @@
                                 </td>
                             </tr>
                         @empty
-                            <tr>
-                                <td colspan="7" class="py-4 text-center text-gray-600">No sales data for this month</td>
-                            </tr>
                         @endforelse
                         </tbody>
                     </table>

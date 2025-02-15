@@ -1,19 +1,10 @@
 @extends('admin.layouts.app')
-@section('page_title', 'Food Menu Management')
+@section('page_title', 'Trash Food Menu Management')
 @section('content')
     <div class="p-6">
-        @auth
-            @if(auth()->user()->role_id == 1)
-                <div class="mb-6 flex justify-between items-center">
-                    <a href="{{ route('food.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
-                        <i class="ph ph-plus mr-2"></i>Add New Food
-                    </a>
-                </div>
-            @endif
-        @endauth
         <div class="bg-white rounded-lg shadow-md mb-6">
             <div class="p-4 border-b border-gray-200">
-                <h3 class="text-lg font-semibold text-gray-700">Food Menu Items</h3>
+                <h3 class="text-lg font-semibold text-gray-700">Trash Food Menu Items</h3>
             </div>
 
             <div class="overflow-x-auto">
@@ -83,21 +74,11 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm">
                                 <div class="flex space-x-2">
-                                    <a href="{{ route('food.edit', $data->id) }}" class="text-blue-600 hover:text-blue-900 text-lg p-2">
-                                        <i class="ph ph-note-pencil"></i>
-                                    </a>
-                                    <form action="{{ route($data->status == 1 ? 'food.destroy' : 'food.restore', $data->id) }}" method="POST" class="inline" onsubmit="return confirm('Do you want to change food menu visibility');">
+                                    <form action="{{ route('food.back', $data->id) }}" method="POST" onsubmit="return confirm('Do you want to put back this food?');">
                                         @csrf
-                                        @method('post')
-                                        <button type="submit" class="text-lg p-2 {{ $data->status == 1 ? 'text-red-600 hover:text-red-900' : 'text-green-600 hover:text-green-900' }}">
-                                            <i class="ph {{ $data->status == 1 ? 'ph-eye-closed' : 'ph-eye' }}"></i>
-                                        </button>
-                                    </form>
-                                    <form action="{{ route('food.remove', $data->id) }}" method="POST" onsubmit="return confirm('Do you want to delete this food?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-red-600 hover:text-red-900 text-lg p-2">
-                                            <i class="ph ph-trash"></i>
+                                        @method('GET')
+                                        <button type="submit" class="text-green-600 hover:text-green-900 text-lg p-2">
+                                            <i class="ph ph-clock-clockwise"></i>
                                         </button>
                                     </form>
                                 </div>
@@ -113,6 +94,10 @@
     </div>
 
     @push('scripts')
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+            });
+        </script>
         <script>
             $(document).ready(function() {
                 $('#foodMenuTable').DataTable({

@@ -59,7 +59,7 @@
                                     <a href="{{ route('staff.edit', $data->id) }}" class="text-blue-600 hover:text-blue-900 text-lg p-2">
                                         <i class="ph ph-note-pencil"></i>
                                     </a>
-                                    <form action="{{ route('staff.delete', $data->id) }}" method="POST" onsubmit="return confirm('Do you want to delete this Staff?');">
+                                    <form action="{{ route('staff.remove', $data->id) }}" method="POST" onsubmit="return confirm('Do you want to delete this Staff?');">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="text-red-600 hover:text-red-900 text-lg p-2">
@@ -70,11 +70,6 @@
                             </td>
                         </tr>
                     @empty
-                        <tr>
-                            <td colspan="10" class="px-6 py-4 text-center text-sm text-gray-500">
-                                No menu items found
-                            </td>
-                        </tr>
                     @endforelse
                     </tbody>
                 </table>
@@ -84,10 +79,6 @@
     </div>
 
     @push('scripts')
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-            });
-        </script>
         <script>
             $(document).ready(function() {
                 $('#foodMenuTable').DataTable({

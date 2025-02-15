@@ -91,11 +91,6 @@
                             </td>
                         </tr>
                     @empty
-                        <tr>
-                            <td colspan="10" class="px-6 py-4 text-center text-sm text-gray-500">
-                                No new Order found
-                            </td>
-                        </tr>
                     @endforelse
                     </tbody>
                 </table>

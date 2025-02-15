@@ -96,4 +96,18 @@ class FoodController extends Controller
         $data->save();
         return redirect()->back();
     }
+    public function remove($id){
+        $data=Menu::findorfail($id);
+        $data->delete();
+        return redirect()->back();
+    }
+    public function trash(){
+        $datas=Menu::onlyTrashed()->get();
+        return view('admin/food_trash',compact('datas'));
+    }
+    public function back($id){
+        $data=Menu::onlyTrashed()->where('id',$id);
+        $data->restore();
+        return redirect()->back();
+    }
 }

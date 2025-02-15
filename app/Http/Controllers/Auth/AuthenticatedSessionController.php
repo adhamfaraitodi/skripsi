@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,6 +25,13 @@ class AuthenticatedSessionController extends Controller
     }
     public function store(LoginRequest $request): RedirectResponse
     {
+        $credentials = $request->only('email', 'password');
+        $user = User::where('email', $credentials['email'])->first();
+
+        if (!$user || $user->deleted_at !== null) {
+            return redirect()->route('login')
+                ->withErrors(['error' => 'This account is no longer active.']);
+        }
         $request->authenticate();
         $request->session()->regenerate();
 
@@ -38,11 +46,18 @@ class AuthenticatedSessionController extends Controller
             return redirect()->intended(route('dashboard'));
         }
         Auth::logout();
-        return redirect()->route('login')->withErrors(['error' => 'Unknown role']);
+        return redirect()->route('login')->withErrors(['error' => 'Unknown data']);
     }
 
     public function adminStore(LoginRequest $request): RedirectResponse
     {
+        $credentials = $request->only('email', 'password');
+        $user = User::where('email', $credentials['email'])->first();
+
+        if (!$user || $user->deleted_at !== null) {
+            return redirect()->route('superadmin.auth.login')
+                ->withErrors(['error' => 'This account is no longer active.']);
+        }
         $request->authenticate();
         $request->session()->regenerate();
 
@@ -57,7 +72,7 @@ class AuthenticatedSessionController extends Controller
             return redirect()->route('superadmin.auth.login')->withErrors(['error' => 'not authorized']);
         }
         Auth::logout();
-        return redirect()->route('superadmin.auth.login')->withErrors(['error' => 'Unknown role']);
+        return redirect()->route('superadmin.auth.login')->withErrors(['error' => 'Unknown data']);
     }
 
 

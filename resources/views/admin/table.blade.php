@@ -48,11 +48,6 @@
                             </td>
                         </tr>
                     @empty
-                        <tr>
-                            <td colspan="10" class="px-6 py-4 text-center text-sm text-gray-500">
-                                No table found
-                            </td>
-                        </tr>
                     @endforelse
                     </tbody>
                 </table>
@@ -61,10 +56,6 @@
     </div>
 
     @push('scripts')
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-            });
-        </script>
         <script>
             $(document).ready(function() {
                 $('#foodMenuTable').DataTable({

@@ -1,63 +1,63 @@
 @extends('admin.layouts.app')
-@section('page_title', 'Food Inventory Management')
-
+@section('page_title', 'Trash Staff Management')
 @section('content')
     <div class="p-6">
         <div class="bg-white rounded-lg shadow-md mb-6">
             <div class="p-4 border-b border-gray-200">
-                <h3 class="text-lg font-semibold text-gray-700">Food Stock Inventory</h3>
+                <h3 class="text-lg font-semibold text-gray-700">Trash Staff list</h3>
             </div>
 
             <div class="overflow-x-auto">
-                <table id="inventoryTable" class="min-w-full divide-y divide-gray-200">
+                <table id="foodMenuTable" class="min-w-full divide-y divide-gray-200 border-separate">
                     <thead class="bg-gray-50">
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Menu Name</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Current Quantity</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Sold</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Add Quantity</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">History</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No.</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Position</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Image</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Telephone</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Address</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
                     </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                    @forelse($datas as $data)
+                    @forelse($datas as $key =>$data)
                         <tr class="hover:bg-gray-50">
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-gray-900">{{ $data->name }}</div>
+                                <div class="text-sm text-gray-900">{{ $key + 1 }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900 font-semibold">{{ optional($data->inventory->first())->current_quantity ?? 'N/A' }}</div>
+                                <div class="flex items-center">
+                                    <div class="w-10 text-sm font-medium text-gray-900">{{ $data->name }}</div>
+                                </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900 font-semibold">{{ $sold[$data->id] ?? 0 }}</div>
+                                <div class="text-sm text-gray-900">{{ $data->role->name}}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <form action="{{ route('inventory.update', $data->id) }}" method="POST" class="flex items-center">
-                                    @csrf
-                                    <input type="number" name="quantity" min="1" required
-                                           class="border rounded-md px-2 py-1 w-20 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                    <button type="submit" class="ml-2 text-green-600 hover:text-green-900">
-                                        <i class="ph ph-plus text-lg"></i>
-                                    </button>
-                                </form>
+                                <div class="text-sm text-gray-900">{{ $data->email}}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="w-48 h-32 overflow-hidden">
+                                    <img src="{{ Storage::url($data->image_path) }}" class="w-full h-full object-cover">
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">{{ $data->telephone_number }}</div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-gray-900 max-w-xs truncate">{{ $data->address }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                <button onclick="toggleDropdown('inventory-{{ $data->id }}')" class="text-blue-600 hover:text-blue-900 flex items-center">
-                                    <span>View History</span>
-                                    <i class="ph ph-caret-down ml-2"></i>
-                                </button>
-
-                                <div id="inventory-{{ $data->id }}" class="hidden mt-2 bg-gray-50 rounded-lg shadow-md p-4">
-                                    <h4 class="text-gray-700 font-semibold mb-2">Inventory History</h4>
-                                    @foreach($data->inventory as $inventory)
-                                        <div class="px-4 py-2 bg-white rounded-md mb-2 shadow-sm">
-                                            <p class="text-sm text-gray-800 font-semibold">
-                                                {{ $inventory->created_at->format('Y-m-d H:i:s') }} -
-                                                {{ $inventory->quantity }} ({{ ucfirst($inventory->transaction_type) }})
-                                            </p>
-                                            <p class="text-sm text-gray-500 italic">Reason: {{ $inventory->reason }}</p>
-                                        </div>
-                                    @endforeach
+                                <div class="flex space-x-2">
+                                    <form action="{{ route('staff.back', $data->id) }}" method="POST" onsubmit="return confirm('Do you want to put back this staff?');">
+                                        @csrf
+                                        @method('GET')
+                                        <button type="submit" class="text-green-600 hover:text-green-900 text-lg p-2">
+                                            <i class="ph ph-clock-clockwise"></i>
+                                        </button>
+                                    </form>
                                 </div>
                             </td>
                         </tr>
@@ -66,17 +66,14 @@
                     </tbody>
                 </table>
             </div>
+
         </div>
     </div>
 
     @push('scripts')
         <script>
-            function toggleDropdown(id) {
-                document.getElementById(id).classList.toggle('hidden');
-            }
-
             $(document).ready(function() {
-                $('#inventoryTable').DataTable({
+                $('#foodMenuTable').DataTable({
                     "paging": true,
                     "lengthMenu": [5, 10, 25, 50],
                     "searching": true,
@@ -85,7 +82,7 @@
                     "responsive": true,
                     "pagingType": "simple",
                     "language": {
-                        "search": "Search inventory:",
+                        "search": "Search Staff:",
                         "lengthMenu": "Show _MENU_ items per page",
                         "zeroRecords": "No matching items found",
                         "info": "Showing _START_ to _END_ of _TOTAL_ items",
@@ -116,5 +113,6 @@
                 });
             });
         </script>
+
     @endpush
 @endsection

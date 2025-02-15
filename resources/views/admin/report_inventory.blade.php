@@ -50,9 +50,6 @@
                                 <td class="py-2 px-4">{{ $item->reason }}</td>
                             </tr>
                         @empty
-                            <tr>
-                                <td colspan="6" class="py-4 text-center text-gray-600">Tidak ada data penjualan untuk bulan ini</td>
-                            </tr>
                         @endforelse
                         </tbody>
                     </table>

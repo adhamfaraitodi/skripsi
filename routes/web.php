@@ -30,6 +30,10 @@ Route::prefix('superadmin')->middleware(['auth','authorized','verified'])->group
     Route::post('food/update/{id}',[FoodController::class,'update'])->name('food.update');
     Route::post('food/destroy/{id}',[FoodController::class,'destroy'])->name('food.destroy');
     Route::post('food/restore/{id}',[FoodController::class,'restore'])->name('food.restore');
+    //food soft delete routes related
+    Route::delete('food/remove/{id}',[FoodController::class,'remove'])->name('food.remove');
+    Route::get('food/trash',[FoodController::class,'trash'])->name('food.trash.index');
+    Route::get('food/back/{id}',[FoodController::class,'back'])->name('food.back');
     //food category routes related
     Route::get('food/category',[CategoryController::class,'index'])->name('category.index');
     Route::get('food/category/create',[CategoryController::class,'create'])->name('category.create');
@@ -56,7 +60,11 @@ Route::prefix('superadmin')->middleware(['auth','authorized','verified'])->group
     Route::post('staff/register',[StaffRegisterController::class,'store'])->name('staff.store');
     Route::get('staff/edit/{id}',[StaffController::class,'edit'])->name('staff.edit');
     Route::post('staff/update/{id}',[StaffController::class,'update'])->name('staff.store');
-    Route::delete('staff/delete/{id}',[StaffController::class,'delete'])->name('staff.delete');
+    //staff soft delete routes related
+    Route::delete('staff/remove/{id}',[StaffController::class,'remove'])->name('staff.remove');
+    Route::get('staff/trash',[StaffController::class,'trash'])->name('staff.trash.index');
+    Route::get('staff/back/{id}',[StaffController::class,'back'])->name('staff.back');
+    //profile routes related
 
 });
 

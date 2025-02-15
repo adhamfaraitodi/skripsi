@@ -57,9 +57,6 @@
                                 <td class="py-2 px-4 text-right">Rp {{ number_format($item->gross_amount, 0, ',', '.') }}</td>
                             </tr>
                         @empty
-                            <tr>
-                                <td colspan="6" class="py-4 text-center text-gray-600">Tidak ada data penjualan untuk bulan ini</td>
-                            </tr>
                         @endforelse
                         </tbody>
                         <tfoot class="bg-gray-100">

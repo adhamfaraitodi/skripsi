@@ -103,7 +103,7 @@
     @endauth
 
     {{--    Single: Profile--}}
-    <a href="{{ route('profile.edit') }}">
+    <a href="{{ route('staff.profile.index') }}">
     <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
         <i class="ph ph-user-circle-gear"></i>
         <div class="flex justify-between w-full items-center">

@@ -8,7 +8,7 @@
                     <h2 class="text-xl font-semibold text-gray-800">Register New Staff</h2>
                 </div>
                 <div class="p-6">
-                    <form action="{{ route('staff.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+                    <form action="{{ route('staff.register') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                         @csrf
                         <!-- Name -->
                         <div>

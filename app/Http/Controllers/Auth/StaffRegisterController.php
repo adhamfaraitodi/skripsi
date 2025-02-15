@@ -37,6 +37,6 @@ class StaffRegisterController extends RegisteredUserController
             'address'=>$request->address,
         ]);
         event(new Registered($user));
-        return redirect(route('staff.index', absolute: false))->with('success', 'Food item added successfully');
+        return redirect(route('staff.index', absolute: false))->with('success', 'staff registered successfully');
     }
 }

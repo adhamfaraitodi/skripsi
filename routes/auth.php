@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\StaffProfileController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
@@ -33,5 +34,6 @@ Route::middleware('auth')->group(function () {
     Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])->name('password.confirm');
     Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
     Route::put('password', [PasswordController::class, 'update'])->name('password.update');
+    Route::put('superadmin/password', [StaffProfileController::class, 'staffPasswordUpdate'])->name('staff.password.update');
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });

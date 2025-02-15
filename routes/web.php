@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\StaffProfileController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\FoodController;
 use App\Http\Controllers\Admin\HomeController;
@@ -57,7 +58,7 @@ Route::prefix('superadmin')->middleware(['auth','authorized','verified'])->group
     //staff routes related
     Route::get('staff',[StaffController::class,'index'])->name('staff.index');
     Route::get('staff/register',[StaffRegisterController::class,'create'])->name('staff.create');
-    Route::post('staff/register',[StaffRegisterController::class,'store'])->name('staff.store');
+    Route::post('staff/register',[StaffRegisterController::class,'store'])->name('staff.register');
     Route::get('staff/edit/{id}',[StaffController::class,'edit'])->name('staff.edit');
     Route::post('staff/update/{id}',[StaffController::class,'update'])->name('staff.store');
     //staff soft delete routes related
@@ -65,7 +66,8 @@ Route::prefix('superadmin')->middleware(['auth','authorized','verified'])->group
     Route::get('staff/trash',[StaffController::class,'trash'])->name('staff.trash.index');
     Route::get('staff/back/{id}',[StaffController::class,'back'])->name('staff.back');
     //profile routes related
-
+    Route::get('profile',[StaffProfileController::class,'index'])->name('staff.profile.index');
+    Route::patch('profile', [StaffProfileController::class, 'update'])->name('staff.profile.update');
 });
 
 Route::middleware('auth')->group(function () {

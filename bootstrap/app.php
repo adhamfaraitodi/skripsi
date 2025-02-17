@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\AuthorizedOnlyUser;
+use App\Http\Middleware\EnsureOnlyAdmin;
 use App\Http\Middleware\RedirectIfNotAuthorized;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -16,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'authorized'=>RedirectIfNotAuthorized::class,
             'userAuthorized'=>AuthorizedOnlyUser::class,
+            'onlySuperAdmin'=>EnsureOnlyAdmin::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

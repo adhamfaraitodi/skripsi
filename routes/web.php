@@ -55,16 +55,19 @@ Route::prefix('superadmin')->middleware(['auth','authorized','verified'])->group
     Route::get('sales-report',[ReportController::class,'index'])->name('sales.index');
     Route::get('inventory-report',[ReportController::class,'inventory'])->name('inventory.index');
     Route::get('financial-report',[ReportController::class,'financial'])->name('financial.index');
-    //staff routes related
-    Route::get('staff',[StaffController::class,'index'])->name('staff.index');
-    Route::get('staff/register',[StaffRegisterController::class,'create'])->name('staff.create');
-    Route::post('staff/register',[StaffRegisterController::class,'store'])->name('staff.register');
-    Route::get('staff/edit/{id}',[StaffController::class,'edit'])->name('staff.edit');
-    Route::post('staff/update/{id}',[StaffController::class,'update'])->name('staff.store');
-    //staff soft delete routes related
-    Route::delete('staff/remove/{id}',[StaffController::class,'remove'])->name('staff.remove');
-    Route::get('staff/trash',[StaffController::class,'trash'])->name('staff.trash.index');
-    Route::get('staff/back/{id}',[StaffController::class,'back'])->name('staff.back');
+    //middleware specific only for superadmin role
+    Route::middleware(['onlySuperAdmin'])->group(function () {    
+        //staff routes related
+        Route::get('staff',[StaffController::class,'index'])->name('staff.index');
+        Route::get('staff/register',[StaffRegisterController::class,'create'])->name('staff.create');
+        Route::post('staff/register',[StaffRegisterController::class,'store'])->name('staff.register');
+        Route::get('staff/edit/{id}',[StaffController::class,'edit'])->name('staff.edit');
+        Route::post('staff/update/{id}',[StaffController::class,'update'])->name('staff.store');
+        //staff soft delete routes related
+        Route::delete('staff/remove/{id}',[StaffController::class,'remove'])->name('staff.remove');
+        Route::get('staff/trash',[StaffController::class,'trash'])->name('staff.trash.index');
+        Route::get('staff/back/{id}',[StaffController::class,'back'])->name('staff.back');
+    });
     //profile routes related
     Route::get('profile',[StaffProfileController::class,'index'])->name('staff.profile.index');
     Route::patch('profile', [StaffProfileController::class, 'update'])->name('staff.profile.update');

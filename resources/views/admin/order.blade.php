@@ -45,7 +45,7 @@
                                     <button type="submit"
                                             class="ml-2 text-green-600
                                         {{ $data->order_status === 'pending' ? 'text-red-600 hover:text-red-900 cursor-not-allowed' : 'text-green-600 hover:text-green-900' }}"
-                                        {{ $data->order_status === 'pending' ? 'disabled' : '' }}>
+                                        {{ $data->order_status === 'pending' ? 'disabled' : '' }}>Proccess
                                         <i class="ph ph-check text-lg"></i>
                                     </button>
                                 </form>

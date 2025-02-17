@@ -2,7 +2,9 @@
 @section('page_title', 'Table Management')
 @section('content')
     <div class="p-6">
-        <div class="mb-6 flex items-center space-x-4">
+        @auth
+            @if(auth()->user()->role_id == 1)
+            <div class="mb-6 flex items-center space-x-4">
             <h3 class="text-lg font-semibold text-gray-700">Put Total Table:</h3>
             <form action="{{ route('table.create') }}" method="POST" class="flex items-center">
                 @csrf
@@ -13,6 +15,8 @@
                 </button>
             </form>
         </div>
+            @endif
+        @endauth
 
         <div class="bg-white rounded-lg shadow-md mb-6">
             <div class="p-4 border-b border-gray-200">
@@ -102,13 +106,17 @@
         </script>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
-                @foreach($datas as $data)
-                new QRCode(document.getElementById("qrcode-{{ $data->table_code }}"), {
-                    text: "{{ url('/scan/' . $data->table_code) }}",
-                    width: 100,
-                    height: 100
+                let tables = @json($datas); 
+                tables.forEach(function (data) {
+                    let elementId = "qrcode-" + data.table_code;
+                    let url = "{{ url('/scan') }}/" + data.table_code;
+
+                    new QRCode(document.getElementById(elementId), {
+                        text: url,
+                        width: 100,
+                        height: 100
+                    });
                 });
-                @endforeach
             });
         </script>
     @endpush

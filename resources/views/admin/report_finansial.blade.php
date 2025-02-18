@@ -5,7 +5,8 @@
         <div class="bg-white shadow-md rounded-lg p-6">
             <div class="mt-6 flex justify-between items-center print:hidden">
                 <div class="space-x-2">
-                    <button onclick="printSection();" class="px-4 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600">
+                    <button onclick="printSection();"
+                            class="px-4 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600">
                         <i class="ph ph-printer mr-2"></i> Print
                     </button>
                 </div>
@@ -15,7 +16,8 @@
                     <img src="{{ asset('storage/icon/icon.png') }}" alt="Logo" class="w-10 mr-4">
                     <div class="text-center">
                         <h2 class="text-xl font-bold pr-11 mt-2 uppercase">YOSHIMIE</h2>
-                        <p class="text-sm text-gray-700">Jl. Kaliurang KM 11, Pedak, Sinduharjo, Kec. Ngaglik, Yogyakarta 55581</p>
+                        <p class="text-sm text-gray-700">Jl. Kaliurang KM 11, Pedak, Sinduharjo, Kec. Ngaglik,
+                            Yogyakarta 55581</p>
                         <p class="text-sm text-gray-700">Phone: 081250514071 | Email: bakmiehotplate@gmail.com</p>
                     </div>
                 </div>
@@ -25,41 +27,39 @@
                     <p class="text-lg text-gray-600">Bulan: {{ Carbon\Carbon::now()->format('F Y') }}</p>
                 </div>
 
-                <div class="grid grid-cols-3 gap-6 mb-8">
-                    <div class="bg-white rounded-lg shadow p-6 border border-gray-200">
-                        <h3 class="text-gray-600 text-sm font-medium mb-2">Monthly Revenue</h3>
-                        <p class="text-2xl font-bold text-gray-900">Rp {{ number_format($monthlyTotal, 0, ',', '.') }}</p>
-                        <p class="text-sm text-gray-500 mt-1">{{ Carbon\Carbon::now()->format('F Y') }}</p>
-                    </div>
+                @php
+                    $reportData = [
+                        ['title' => 'Monthly Revenue', 'value' => $monthlyTotal, 'suffix' =>'/'. Carbon\Carbon::now()->format('F Y')],
+                        ['title' => 'Average Daily Revenue', 'value' => $averagePerDay, 'suffix' => '/ Day'],
+                        ['title' => 'Average Order Value', 'value' => $averageOrderValue, 'suffix' => '/ Transaction'],
+                        ['title' => 'Total Orders', 'value' => $totalOrders, 'suffix' => 'Completed'],
+                        ['title' => 'Most Sold Item', 'value' => $mostSoldItem['name'] ?? 'N/A', 'suffix' => ($mostSoldItem['quantity'] ?? 0) . ' Sold'],
+                        ['title' => 'Highest Revenue Item', 'value' => $highestRevenueItem['name'] ?? 'N/A', 'suffix' => 'Rp ' . number_format($highestRevenueItem['revenue'] ?? 0, 0, ',', '.')],
+                        ['title' => 'Most Favorite Item', 'value' => $mostFavoriteMenu['name'] ?? 'N/A', 'suffix' =>  number_format($mostFavoriteMenu['favorite'] ?? 0) .' Favorite'],
+                    ];
+                @endphp
 
-                    <div class="bg-white rounded-lg shadow p-6 border border-gray-200">
-                        <h3 class="text-gray-600 text-sm font-medium mb-2">Total Orders</h3>
-                        <p class="text-2xl font-bold text-gray-900">{{ $totalOrders }}</p>
-                        <p class="text-sm text-gray-500 mt-1">Completed Transactions</p>
-                    </div>
-
-                    <div class="bg-white rounded-lg shadow p-6 border border-gray-200">
-                        <h3 class="text-gray-600 text-sm font-medium mb-2">Average Order Value</h3>
-                        <p class="text-2xl font-bold text-gray-900">Rp {{ number_format($averageOrderValue, 0, ',', '.') }}</p>
-                        <p class="text-sm text-gray-500 mt-1">Per Transaction</p>
-                    </div>
-                    <div class="bg-white rounded-lg shadow p-6 border border-gray-200">
-                        <h3 class="text-gray-600 text-sm font-medium mb-2">Most Sold Item</h3>
-                        <p class="text-2xl font-bold text-gray-900">{{ $mostSoldItem['name'] ?? 'N/A' }}</p>
-                        <p class="text-sm text-gray-500 mt-1">{{ $mostSoldItem['quantity'] ?? 0 }} Units Sold</p>
-                    </div>
-
-                    <div class="bg-white rounded-lg shadow p-6 border border-gray-200">
-                        <h3 class="text-gray-600 text-sm font-medium mb-2">Highest Revenue Item</h3>
-                        <p class="text-2xl font-bold text-gray-900">{{ $highestRevenueItem['name'] ?? 'N/A' }}</p>
-                        <p class="text-sm text-gray-500 mt-1">Rp {{ number_format($highestRevenueItem['revenue'] ?? 0, 0, ',', '.') }}</p>
-                    </div>
-                    <div class="bg-white rounded-lg shadow p-6 border border-gray-200">
-                        <h3 class="text-gray-600 text-sm font-medium mb-2">Average Daily Revenue</h3>
-                        <p class="text-2xl font-bold text-gray-900">Rp {{ number_format($averagePerDay, 0, ',', '.') }}</p>
-                        <p class="text-sm text-gray-500 mt-1">Per Day</p>
-                    </div>
+                <div class="bg-white rounded-lg shadow p-6 border border-gray-200">
+                    <table class="w-full text-gray-900">
+                        <tbody>
+                        @foreach ($reportData as $data)
+                            <tr class="border-b">
+                                <td class="py-2 text-gray-600 text-sm">{{ $data['title'] }}</td>
+                                <td class="py-2 text-right font-bold">
+                                    @if (is_numeric($data['value']) && !str_contains($data['title'], 'Total Orders'))
+                                        Rp {{ number_format($data['value'], 0, ',', '.') }}
+                                    @else
+                                        {{ $data['value'] }}
+                                    @endif
+                                    <span class="text-black text-sm ml-2">{{ $data['suffix'] }}</span>
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
                 </div>
+
+
                 <div class="overflow-x-auto">
                     <table class="min-w-full bg-white border border-gray-300">
                         <thead class="bg-gray-200">
@@ -84,7 +84,8 @@
                                         @foreach($payment->order->menus as $menu_order)
                                             <li class="flex items-center py-1 text-sm">
                                                 <span class="font-medium mr-5">{{ $menu_order->name }}</span>
-                                                <span>{{ $menu_order->quantity }} x (Rp {{ number_format($menu_order->price, 0, ',', '.') }} - Rp {{ number_format($menu_order->discount, 0, ',', '.') }}) = <span class="font-semibold">Rp {{ number_format($menu_order->subtotal, 0, ',', '.') }}</span></span>
+                                                <span>{{ $menu_order->quantity }} x (Rp {{ number_format($menu_order->price, 0, ',', '.') }} - Rp {{ number_format($menu_order->discount, 0, ',', '.') }}) = <span
+                                                        class="font-semibold">Rp {{ number_format($menu_order->subtotal, 0, ',', '.') }}</span></span>
                                             </li>
                                         @endforeach
                                     </ul>
@@ -92,7 +93,8 @@
                                 <td class="py-2 px-4">{{ $payment->payment_type }}</td>
                                 <td class="py-2 px-4">Rp {{ number_format($payment->gross_amount, 0, ',', '.') }}</td>
                                 <td class="py-2 px-4">
-                        <span class="px-2 py-1 rounded text-sm text-green-600">{{ $payment->transaction_status }}</span>
+                                    <span
+                                        class="px-2 py-1 rounded text-sm text-green-600">{{ $payment->transaction_status }}</span>
                                 </td>
                             </tr>
                         @empty

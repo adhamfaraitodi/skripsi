@@ -20,6 +20,6 @@ class RedirectIfNotAuthorized
         if ($user && in_array($user->role_id, [1, 2])) {
             return $next($request);
         }
-        return redirect()->route('login')->with('error','Access denied');
+        return redirect()->route('login');
     }
 }

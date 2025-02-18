@@ -17,7 +17,7 @@ class EnsureOnlyAdmin
     public function handle(Request $request, Closure $next): Response
     {
         $user = Auth::user();
-        if ($user->role_id == 1) {
+        if ($user && in_array($user->role_id, [1])) {
             return $next($request);
         }
         return redirect('superadmin.dashboard');

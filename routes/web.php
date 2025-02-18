@@ -11,15 +11,18 @@ use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Admin\TableController;
 use App\Http\Controllers\Auth\StaffRegisterController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\User\UserTableController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [UserTableController::class, 'index'])->name('user.table');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth','userAuthorized' ,'verified'])->name('dashboard');
+Route::middleware(['auth','userAuthorized' ,'verified'])->group(function (){
+    Route::get('dashboard', [UserTableController::class, 'index'])->name('dashboard');
+    //profile related
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
 Route::prefix('superadmin')->middleware(['auth','authorized','verified'])->group(function () {
     Route::get('dashboard', [HomeController::class, 'index'])->name('superadmin.dashboard');
@@ -56,7 +59,7 @@ Route::prefix('superadmin')->middleware(['auth','authorized','verified'])->group
     Route::get('inventory-report',[ReportController::class,'inventory'])->name('inventory.index');
     Route::get('financial-report',[ReportController::class,'financial'])->name('financial.index');
     //middleware specific only for superadmin role
-    Route::middleware(['onlySuperAdmin'])->group(function () {    
+    Route::middleware(['onlySuperAdmin'])->group(function () {
         //staff routes related
         Route::get('staff',[StaffController::class,'index'])->name('staff.index');
         Route::get('staff/register',[StaffRegisterController::class,'create'])->name('staff.create');
@@ -72,11 +75,4 @@ Route::prefix('superadmin')->middleware(['auth','authorized','verified'])->group
     Route::get('profile',[StaffProfileController::class,'index'])->name('staff.profile.index');
     Route::patch('profile', [StaffProfileController::class, 'update'])->name('staff.profile.update');
 });
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
 require __DIR__.'/auth.php';

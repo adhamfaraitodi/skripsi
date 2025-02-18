@@ -17,7 +17,7 @@ class AuthorizedOnlyUser
     public function handle(Request $request, Closure $next): Response
     {
         $user = Auth::user();
-        if ($user->role_id == 3) {
+        if ($user && in_array($user->role_id, [3])) {
             return $next($request);
         }
         return redirect('login');

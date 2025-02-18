@@ -33,7 +33,7 @@ class ReportController extends Controller
             ->get();
         return view('admin/report_inventory',compact('datas'));
     }
-    public function financial()
+    public function financial() // need simplification i believe
     {
         $currentMonth = Carbon::now()->month;
         $currentYear = Carbon::now()->year;
@@ -93,16 +93,6 @@ class ReportController extends Controller
             ->whereYear('created_at', $currentYear)
             ->orderBy('created_at', 'desc')
             ->paginate(20);
-
-//        dd(compact(
-//            'monthlyTotal',
-//            'averagePerDay',
-//            'totalOrders',
-//            'averageOrderValue',
-//            'mostSoldItem',
-//            'highestRevenueItem',
-//            'mostFavoriteMenu',
-//        ));
         return view('admin.report_finansial', compact(
             'datas',
             'monthlyTotal',

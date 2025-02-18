@@ -48,10 +48,12 @@
                             <th class="py-2 px-4 text-left">No</th>
                             <th class="py-2 px-4 text-left">Date</th>
                             <th class="py-2 px-4 text-left">Order Code</th>
+                            <th class="py-2 px-4 text-left">Order By</th>
                             <th class="py-2 px-4 text-left">Items</th>
-                            <th class="py-2 px-4 text-left">Payment Type</th>
+                            <th class="py-2 px-4 text-left">Payment Thru</th>
+                            <th class="py-2 px-4 text-left">Payment Status</th>
                             <th class="py-2 px-4 text-left">Gross Amount</th>
-                            <th class="py-2 px-4 text-left">Status</th>
+
                         </tr>
                         </thead>
                         <tbody>
@@ -60,6 +62,7 @@
                                 <td class="py-2 px-4">{{ $index + 1 }}</td>
                                 <td class="py-2 px-4">{{ Carbon\Carbon::parse($payment->created_at)->format('d M Y - H:i') }}</td>
                                 <td class="py-2 px-4">{{ $payment->order->order_code }}</td>
+                                <td class="py-2 px-4">{{ $payment->order->user_id }}</td>
                                 <td class="py-2 px-4">
                                     <ul class="list-disc list-inside">
                                         @foreach($payment->order->menus as $menu_order)
@@ -72,11 +75,11 @@
                                     </ul>
                                 </td>
                                 <td class="py-2 px-4">{{ $payment->payment_type }}</td>
-                                <td class="py-2 px-4">Rp {{ number_format($payment->gross_amount, 0, ',', '.') }}</td>
                                 <td class="py-2 px-4">
                                     <span
                                         class="px-2 py-1 rounded text-sm text-green-600">{{ $payment->transaction_status }}</span>
                                 </td>
+                                <td class="py-2 px-4">Rp {{ number_format($payment->gross_amount, 0, ',', '.') }}</td>
                             </tr>
                         @empty
                         @endforelse

@@ -18,7 +18,6 @@ class TableController extends Controller
         $request->validate([
             'total' => 'required|integer|min:1',
         ]);
-
         $total = $request->total;
         $currentCount = Table::count();
         $deletedCount = Table::onlyTrashed()->count();

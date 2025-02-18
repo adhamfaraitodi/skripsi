@@ -101,7 +101,7 @@ class ReportController extends Controller
 //            'averageOrderValue',
 //            'mostSoldItem',
 //            'highestRevenueItem',
-//            'mostFavoriteMenu'
+//            'mostFavoriteMenu',
 //        ));
         return view('admin.report_finansial', compact(
             'datas',

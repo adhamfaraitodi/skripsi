@@ -121,6 +121,13 @@
     </form>
 </div>
 <script>
+    function debounce(func, wait) {
+        let timeout;
+        return function() {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, arguments), wait);
+        };
+    }
     function dropdown(submenuId, arrowId) {
         let submenu = document.getElementById(submenuId);
         let arrow = document.querySelector(`#${arrowId} i`);

@@ -11,17 +11,37 @@ use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Admin\TableController;
 use App\Http\Controllers\Auth\StaffRegisterController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\User\UserCartController;
+use App\Http\Controllers\User\UserHistoryController;
+use App\Http\Controllers\User\UserMenuController;
+use App\Http\Controllers\User\UserPaymentController;
 use App\Http\Controllers\User\UserTableController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [UserTableController::class, 'index'])->name('user.table');
+Route::get('/scan/{id}', [UserTableController::class, 'scan'])->name('user.scan');
+Route::get('/dine-in', [UserMenuController::class, 'index'])->name('user.dine-in');
+Route::post('/cart/add', [UserCartController::class, 'create'])->name('user.add-cart');
+Route::post('/favorite', [UserCartController::class, 'favorite'])->name('user.favorite');
 
 Route::middleware(['auth','userAuthorized' ,'verified'])->group(function (){
-    Route::get('dashboard', [UserTableController::class, 'index'])->name('dashboard');
-    //profile related
+    Route::get('table', [UserTableController::class, 'index'])->name('dashboard');
+    //profile routes related
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    //cart routes related
+    Route::get('/dine-in/cart', [UserCartController::class, 'index'])->name('user.cart');
+    Route::post('/cart/update', [UserCartController::class, 'updateCart'])->name('user.update-cart');
+    //payment routes related
+    Route::get('/payment/{order_id}', [UserPaymentController::class, 'payment'])->name('user.payment');
+    //chekout routes related
+    Route::get('dine-in/checkout', [UserPaymentController::class, 'index'])->name('user.checkout');
+    Route::post('dine-in/checkout', [UserPaymentController::class, 'create'])->name('user.checkout.create');
+    //order history routes related
+    Route::get('/order/history', [UserHistoryController::class, 'index'])->name('user.history');
+    //redirect
+    Route::get('thank-you', [UserPaymentController::class, 'pop'])->name('order.success');
 });
 
 Route::prefix('superadmin')->middleware(['auth','authorized','verified'])->group(function () {

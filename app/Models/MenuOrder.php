@@ -11,6 +11,7 @@ class MenuOrder extends Model
     protected $fillable = [
         'menu_id',
         'order_id',
+        'name',
         'quantity',
         'price',
         'discount',

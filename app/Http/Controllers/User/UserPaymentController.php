@@ -71,15 +71,7 @@ class UserPaymentController extends Controller
             ]);
         }
         session()->forget('cart');
-        return response()->json([
-            'message' => 'Order placed successfully!',
-            'redirect_url' => route('user.payment', ['order_id' => $order_code]),
-        ]);
-    }
-    public function payment($order_id)
-    {
-        $order = Order::where('order_code', $order_id)->firstOrFail();
-        $user = Auth::user();
+
         Config::$serverKey = config('services.midtrans.server_key');
         Config::$isProduction = config('services.midtrans.is_production');
         Config::$isSanitized = true;
@@ -90,15 +82,18 @@ class UserPaymentController extends Controller
             'gross_amount' => $order->gross_amount,
         ];
         $customer_details = [
-            'first_name' => $user->name,
-            'email' => $user->email,
+            'first_name' => Auth::user()->name,
+            'email' => Auth::user()->email,
         ];
         $transaction = [
             'transaction_details' => $transaction_details,
             'customer_details' => $customer_details,
         ];
         $snapToken = Snap::getSnapToken($transaction);
-        return view('user.payment_user', compact('order', 'snapToken'));
+        return response()->json([
+            'snap_token' => $snapToken,
+        ]);
+    
     }
     public function pop(){
         return view('user.thank_you');

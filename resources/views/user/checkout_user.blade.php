@@ -65,42 +65,73 @@
             <textarea id="order_note" name="order_note" class="w-full p-2 border border-gray-300 rounded" rows="3" placeholder="Add any special instructions here..."></textarea>
         </div>
 
-        <button id="checkoutButton" onclick="submitOrder()"
-                class="w-full bg-green-600 text-white font-bold py-3 px-6 rounded-lg">
+        <button id="pay-button" 
+                class="w-full bg-green-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-700 transition-colors">
             Confirm Order
         </button>
     </div>
+    <script type="text/javascript"
+        src="https://app.sandbox.midtrans.com/snap/snap.js"
+        data-client-key="{{ config('services.midtrans.client_key') }}"></script>
 
-    <script>
-        function submitOrder() {
-            const note = document.getElementById('order_note').value;
-            const button = document.getElementById('checkoutButton');
-
+        <script type="text/javascript">
+        document.getElementById('pay-button').addEventListener('click', function () {
+            // Disable button to prevent multiple clicks
+            const button = this;
             button.disabled = true;
             button.textContent = "Processing...";
 
+            // First, create the order with the note
             fetch("{{ route('user.checkout.create') }}", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     "X-CSRF-TOKEN": "{{ csrf_token() }}"
                 },
-                body: JSON.stringify({ order_note: note })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.redirect_url) {
-                        window.location.href = data.redirect_url;
-                    } else {
-                        alert(data.message);
-                    }
+                body: JSON.stringify({ 
+                    order_note: document.getElementById('order_note').value 
                 })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Something went wrong. Please try again.');
+            })
+            .then(response => response.json())
+            .then(data => {
+                
+                if (data.snap_token) {
+                    
+                    window.snap.pay(data.snap_token, {
+                        onSuccess: function(result) {
+                            alert("Payment Successful!");
+                            console.log(result);
+                            window.location.href = "{{ route('order.success') }}";
+                        },
+                        onPending: function(result) {
+                            alert("Waiting for your payment...");
+                            console.log(result);
+                    
+                        },
+                        onError: function(result) {
+                            alert("Payment Failed!");
+                            console.log(result);
+                            button.disabled = false;
+                            button.textContent = "Confirm Order";
+                        },
+                        onClose: function() {
+                            alert("You closed the payment popup.");
+                            button.disabled = false;
+                            button.textContent = "Confirm Order";
+                        }
+                    });
+                } else {
+                    alert(data.message || "Unable to process payment. Please try again.");
                     button.disabled = false;
                     button.textContent = "Confirm Order";
-                });
-        }
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Something went wrong. Please try again.');
+                button.disabled = false;
+                button.textContent = "Confirm Order";
+            });
+        });
     </script>
 @endsection

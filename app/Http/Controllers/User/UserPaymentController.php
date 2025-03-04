@@ -101,7 +101,7 @@ class UserPaymentController extends Controller
         return view('user.payment_user', compact('order', 'snapToken'));
     }
     public function pop(){
-
+        return view('user.thank_you');
     }
 
 }

@@ -1,11 +1,10 @@
-<div class="relative flex flex-col text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-full">
-    <div class="relative mx-4 mt-4 overflow-hidden text-gray-700 bg-white bg-clip-border rounded-xl h-30 flex items-center justify-center">
+<div class="relative flex flex-col bg-white shadow-lg rounded-xl overflow-hidden w-full transition-transform transform hover:-translate-y-1 hover:shadow-xl">
+    <div class="relative mx-4 mt-4 overflow-hidden bg-white rounded-xl h-40 flex items-center justify-center">
         {{ $content }}
     </div>
-
-    <div class="p-6">
+    <div class="p-5">
         {{ $tittle }}
-        <p class="block font-sans text-sm antialiased font-normal leading-normal text-gray-700 opacity-75 ">
+        <p class="block text-gray-600 text-sm font-light leading-snug mt-4">
             {{ $description }}
         </p>
     </div>

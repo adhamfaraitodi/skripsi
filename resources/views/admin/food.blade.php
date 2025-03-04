@@ -43,15 +43,13 @@
                         <div class="text-sm text-gray-900 max-w-xs truncate">{{ $data->description }}</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">{{ number_format($data->price, 0, ',', '.') }}</div>
+                        <div class="text-sm text-gray-900">Rp {{ number_format($data->price, 0, ',', '.') }}</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         @if($data->discount > 0)
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                    {{ $data->discount }}%
-                </span>
+                            <span class="px-2 inline-flex text-sm ">Rp {{ number_format($data->discount, 0, ',', '.') }}</span>
                         @else
-                            <span class="text-sm text-gray-500">-</span>
+                            <span class="text-sm text-gray-500">Rp -</span>
                         @endif
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">

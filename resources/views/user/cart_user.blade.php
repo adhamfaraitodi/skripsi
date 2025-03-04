@@ -37,8 +37,9 @@
                     @endforeach
 
                     <div class="border-t pt-4">
-                        <p class="text-xl font-bold" id="total-amount">Total: Rp {{ number_format($total, 0, ',', '.') }}</p>
-
+                        <div class="text-right">
+                            <p class="text-lg font-bold pr-4" id="total-amount">Grand Total: Rp {{ number_format($total, 0, ',', '.') }}</p>
+                        </div>
                         <div class="flex space-x-4 mt-4">
                             <a href="{{ route('user.dine-in') }}">
                                 <button class="font-sans font-bold text-center py-3 px-6 rounded-lg bg-gray-200 text-gray-800">
@@ -85,7 +86,7 @@
                         document.getElementById(`subtotal-${menuId}`).textContent =
                             `Subtotal: Rp ${new Intl.NumberFormat('id-ID').format(data.subtotal)}`;
                         document.getElementById('total-amount').textContent =
-                            `Total: Rp ${new Intl.NumberFormat('id-ID').format(data.total)}`;
+                            `Grand Total: Rp ${new Intl.NumberFormat('id-ID').format(data.total)}`;
                     }
                 }).catch(error => console.error("Error:", error));
         }

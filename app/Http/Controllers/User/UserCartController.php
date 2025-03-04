@@ -16,7 +16,6 @@ class UserCartController extends Controller
         foreach ($cart as $item) {
             $total += $item['subtotal'];
         }
-//        dd(session()->all());
         return view('user.cart_user', compact('cart', 'total'));
     }
     public function create(Request $request){
@@ -53,25 +52,24 @@ class UserCartController extends Controller
     public function favorite(Request $request)
     {
         $menuId = $request->input('menu_id');
-        $menu = Menu::find($menuId);
-        if (!$menu) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Menu not found'
-            ]);
-        }
-        if ($menu->favorite > 0) {
-            $menu->decrement('favorite');
-            $status = 'removed';
-        } else {
+        $menu = Menu::findOrFail($menuId);
+        $isFavorite = filter_var($request->input('is_favorite'), FILTER_VALIDATE_BOOLEAN);
+    
+        if ($isFavorite) {
             $menu->increment('favorite');
             $status = 'added';
+        } else {
+            if ($menu->favorite > 0) {
+                $menu->decrement('favorite');
+            }
+            $status = 'removed';
         }
         return response()->json([
             'status' => $status,
-            'message' => $status === 'added' ? 'Added to favorites' : 'Removed from favorites'
+            'favorite_count' => $menu->favorite
         ]);
     }
+    
     public function updateCart(Request $request)
     {
         $menuId = $request->menu_id;

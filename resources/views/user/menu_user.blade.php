@@ -38,7 +38,7 @@
                             <button class="font-sans font-bold py-3 pr-10"
                                     type="button"
                                     onclick="toggleStar(this, '{{ $data->id }}')">
-                                <i class="bi {{ $data->is_favorite ? 'bi-star-fill' : 'bi-star' }} text-yellow-500 text-xl"></i>
+                                <i class="bi {{ $data->favorite > 0 ? 'bi-star-fill' : 'bi-star' }} text-yellow-500 text-xl"></i>
                             </button>
                             @if ($data->stock === null)
                                 <button class="font-sans font-bold text-center py-3 px-6 rounded-lg bg-gray-500 text-white cursor-not-allowed"
@@ -69,6 +69,8 @@
 <script>
     function toggleStar(button, menuId) {
         let starIcon = button.querySelector("i");
+        let favoriteCountSpan = button.previousElementSibling;
+        let isCurrentlyFavorited = starIcon.classList.contains("bi-star-fill");
 
         fetch("{{ route('user.favorite') }}", {
             method: "POST",
@@ -76,20 +78,23 @@
                 "Content-Type": "application/json",
                 "X-CSRF-TOKEN": "{{ csrf_token() }}"
             },
-            body: JSON.stringify({ menu_id: menuId })
+            body: JSON.stringify({ 
+                menu_id: menuId,
+                is_favorite: isCurrentlyFavorited ? "false" : "true"
+            })
         }).then(response => response.json())
-            .then(data => {
-                if (data.status === "added") {
-                    starIcon.classList.remove("bi-star");
-                    starIcon.classList.add("bi-star-fill");
-                } else if (data.status === "removed") {
-                    starIcon.classList.remove("bi-star-fill");
-                    starIcon.classList.add("bi-star");
-                } else {
-                    console.error("Unexpected response:", data);
-                }
-            }).catch(error => console.error("Error:", error));
+        .then(data => {
+            if (data.status === "added") {
+                starIcon.classList.remove("bi-star");
+                starIcon.classList.add("bi-star-fill");
+            } else if (data.status === "removed") {
+                starIcon.classList.remove("bi-star-fill");
+                starIcon.classList.add("bi-star");
+            }
+            favoriteCountSpan.textContent = data.favorite_count;
+        }).catch(error => console.error("Error:", error));
     }
+
     function addToCart(event, itemId) {
         event.preventDefault();
 

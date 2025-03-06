@@ -16,9 +16,6 @@
                         ['title' => 'Average Daily Revenue', 'value' => $averagePerDay, 'suffix' => '/ Day'],
                         ['title' => 'Average Order Value', 'value' => $averageOrderValue, 'suffix' => '/ Transaction'],
                         ['title' => 'Total Orders', 'value' => $totalOrders, 'suffix' => 'Completed'],
-                        ['title' => 'Most Sold Item', 'value' => $mostSoldItem['name'] ?? 'N/A', 'suffix' => ($mostSoldItem['quantity'] ?? 0) . ' Sold'],
-                        ['title' => 'Highest Revenue Item', 'value' => $highestRevenueItem['name'] ?? 'N/A', 'suffix' => 'Rp ' . number_format($highestRevenueItem['revenue'] ?? 0, 0, ',', '.')],
-                        ['title' => 'Most Favorite Item', 'value' => $mostFavoriteMenu['name'] ?? 'N/A', 'suffix' =>  number_format($mostFavoriteMenu['favorite'] ?? 0) .' Favorite'],
                     ];
                 @endphp
 
@@ -28,13 +25,13 @@
                         @foreach ($reportData as $data)
                             <tr class="border-b">
                                 <td class="py-2 text-gray-600 text-sm">{{ $data['title'] }}</td>
-                                <td class="py-2 text-right font-bold">
+                                <td class="py-2 text-right ">
                                     @if (is_numeric($data['value']) && !str_contains($data['title'], 'Total Orders'))
                                         Rp {{ number_format($data['value'], 0, ',', '.') }}
                                     @else
                                         {{ $data['value'] }}
                                     @endif
-                                    <span class="text-black text-sm ml-2">{{ $data['suffix'] }}</span>
+                                    <span class="text-black text-sm ml-2 font-medium">{{ $data['suffix'] }}</span>
                                 </td>
                             </tr>
                         @endforeach

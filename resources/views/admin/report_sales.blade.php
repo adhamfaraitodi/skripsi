@@ -6,6 +6,31 @@
             <x-button.print>
                 <x-slot name="title">Laporan Penjualan Bulanan </x-slot>
             </x-button.print>
+            @php
+                $mostFavoriteMenu = $mostFavoriteMenu ?? ['name' => 'N/A', 'favorite' => 0];
+                $mostSoldItem = $mostSoldItem ?? ['name' => 'N/A', 'quantity' => 0];
+
+                $reportData = [
+                    ['title' => 'Most Favorite Menu', 'value' => $mostFavoriteMenu['name'], 'suffix' => number_format($mostFavoriteMenu['favorite']) . ' Favorite'],
+                    ['title' => 'Most Sold Item', 'value' => $mostSoldItem['name'], 'suffix' => $mostSoldItem['quantity'] . ' Sold'],
+                ];
+            @endphp
+
+            <div class="bg-white rounded-lg shadow p-6 border border-gray-200">
+                <table class="w-full text-gray-900">
+                    <tbody>
+                        @foreach ($reportData as $data)
+                            <tr class="border-b">
+                                <td class="py-2 text-gray-600 text-sm">{{ $data['title'] }}</td>
+                                <td class="py-2 text-right ">
+                                    {{ $data['value'] }}
+                                    <span class="text-black text-sm ml-2 font-medium">{{ $data['suffix'] }}</span>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
                 <div class="overflow-x-auto">
                     <table class="min-w-full bg-white border border-gray-300">
                         <thead class="bg-gray-200">

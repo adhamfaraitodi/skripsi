@@ -60,9 +60,7 @@
                             <div id="payment-detail-{{ $data->id }}" class="hidden mt-2 bg-gray-50 rounded-lg shadow-md p-4 transition-all duration-300">
                                 <h4 class="text-gray-700 font-semibold mb-2">Order Detail</h4>
                                 <div class="px-4 py-2 bg-white rounded-md mb-2 shadow-sm border border-gray-200">
-                                    <p class="text-sm text-gray-800 font-semibold">
-                                        {{ $data->payment->created_at->format('Y-m-d H:i:s') ?? 'N/A' }} -
-                                    </p>
+                                <p class="text-sm text-gray-800 font-semibold">{{ optional($data->payment)->created_at ? $data->payment->created_at->format('Y-m-d H:i:s') : 'N/A' }}</p>
                                     <p class="text-sm text-gray-500 italic">Status: {{ $data->payment->transaction_status ?? 'N/A'}}</p>
                                     <p class="text-sm text-gray-500 italic">Payment Type: {{ $data->payment->payment_type ?? 'N/A'}}</p>
                                 </div>

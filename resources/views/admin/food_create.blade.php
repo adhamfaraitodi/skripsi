@@ -10,7 +10,6 @@
                 <div class="p-6">
                     <form action="{{ route('food.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                         @csrf
-                        <!-- Name -->
                         <div>
                             <label for="foodName" class="block text-sm font-medium text-gray-700">
                                 Food Name <span class="text-red-500">*</span>
@@ -21,7 +20,6 @@
                                    required
                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                         </div>
-                        <!-- Description -->
                         <div>
                             <label for="foodDesc" class="block text-sm font-medium text-gray-700">
                                 Description <span class="text-red-500">*</span>
@@ -32,7 +30,6 @@
                                       required
                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
                         </div>
-                        <!-- Image -->
                         <div>
                             <label for="foodImg" class="block text-sm font-medium text-gray-700">
                                 Food Image
@@ -45,8 +42,6 @@
                                        class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
                             </div>
                         </div>
-
-                        <!-- Stock -->
                         <div>
                             <label for="foodStock" class="block text-sm font-medium text-gray-700">
                                 Stock Available
@@ -55,10 +50,9 @@
                                    name="foodStock"
                                    id="foodStock"
                                    min="0"
+                                   value="0"
                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                         </div>
-
-                        <!-- Category Selection -->
                         <div>
                             <label for="category_id" class="block text-sm font-medium text-gray-700 mb-2">
                                 Category <span class="text-red-500">*</span>
@@ -73,8 +67,6 @@
                                 @endforeach
                             </select>
                         </div>
-
-                        <!-- Price -->
                         <div>
                             <label for="foodPrice" class="block text-sm font-medium text-gray-700">
                                 Price <span class="text-red-500">*</span>
@@ -87,12 +79,11 @@
                                        name="foodPrice"
                                        id="foodPrice"
                                        required
-                                       min="0"
+                                        min="0"
+                                        value="0"
                                        class="pl-12 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                             </div>
                         </div>
-
-                        <!-- Discount -->
                         <div>
                             <label for="foodPrice" class="block text-sm font-medium text-gray-700">
                                 Discount <span class="text-red-500">*</span>
@@ -106,10 +97,10 @@
                                        id="foodDisc"
                                        required
                                        min="0"
+                                       value="0"
                                        class="pl-12 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                             </div>
                         </div>
-                        <!-- Form Buttons -->
                         <div class="flex justify-end space-x-3 pt-4">
                             <button type="reset"
                                     class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">

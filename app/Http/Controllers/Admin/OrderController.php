@@ -24,7 +24,7 @@ class OrderController extends Controller
     }
     public function update($id){
         $data = Order::findOrFail($id);
-        $data->status_order="success";
+        $data->order_status="success";
         $data->save();
         return redirect()->back();
     }

@@ -20,11 +20,17 @@
                 <div class="relative">
                     <button id="dropdownButton" onclick="toggleDropdown()" class="flex items-center space-x-2 text-gray-500 hover:text-gray-700">
                         <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name }}"
-                             alt="Profile" class="w-8 h-8 rounded-full">
+                            alt="Profile" class="w-8 h-8 rounded-full">
                         <span>{{ Auth::user()->name }}</span>
                         <i id="caretIcon" class="ph ph-caret-down"></i>
                     </button>
-                    <div id="userDropdown" class="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg hidden">
+                    
+                    <div id="userDropdown" class="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg hidden z-50">
+                        <a href="{{ route('profile.edit') }}" class="flex w-full px-4 py-2 text-gray-700 hover:bg-gray-100">
+                            <i class="ph ph-user-circle text-xl mr-2"></i>
+                            {{ __('Profile') }}
+                        </a>
+
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <button type="submit" class="flex w-full px-4 py-2 text-gray-500 hover:bg-gray-100">

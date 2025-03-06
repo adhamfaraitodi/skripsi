@@ -51,7 +51,7 @@ class MidtransController extends Controller
         );
 
         if ($validated['transaction_status'] === 'settlement') {
-            $order->update(['status' => 'paid']);
+            $order->update(['order_status' => 'paid']);
         }
         return response()->json(['message' => 'Payment recorded successfully']);
     }

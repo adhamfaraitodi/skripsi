@@ -49,7 +49,7 @@
                         @if($data->discount > 0)
                             <span class="px-2 inline-flex text-sm ">Rp {{ number_format($data->discount, 0, ',', '.') }}</span>
                         @else
-                            <span class="text-sm text-gray-500">Rp -</span>
+                            <span class="text-sm text-gray-500">Rp 0</span>
                         @endif
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">

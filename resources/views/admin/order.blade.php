@@ -2,6 +2,7 @@
 @section('page_title', 'New Order Management')
 @section('content')
     <div class="p-6">
+
         <x-table-data :name="'Trash Food Menu Items'">
             <x-slot name="column">
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">status order</th>
@@ -64,6 +65,7 @@
                                 @endforeach
                             </div>
                         </td>
+                        
                         <td class="px-6 py-4 whitespace-nowrap text-sm">
                             <button onclick="toggleDropdown('payment-detail-{{ $data->id }}')"
                                     class="text-blue-600 hover:text-blue-900 flex items-center transition-all duration-300">
@@ -73,9 +75,7 @@
                             <div id="payment-detail-{{ $data->id }}" class="hidden mt-2 bg-gray-50 rounded-lg shadow-md p-4 transition-all duration-300">
                                 <h4 class="text-gray-700 font-semibold mb-2">Order Detail</h4>
                                 <div class="px-4 py-2 bg-white rounded-md mb-2 shadow-sm border border-gray-200">
-                                    <p class="text-sm text-gray-800 font-semibold">
-                                        {{ $data->payment->created_at->format('Y-m-d H:i:s') ?? 'N/A' }} -
-                                    </p>
+                                <p class="text-sm text-gray-800 font-semibold">{{ optional($data->payment)->created_at ? $data->payment->created_at->format('Y-m-d H:i:s') : 'N/A' }}</p>
                                     <p class="text-sm text-gray-500 italic">Status: {{ $data->payment->transaction_status ?? 'N/A'}}</p>
                                     <p class="text-sm text-gray-500 italic">Payment Type: {{ $data->payment->payment_type ?? 'N/A'}}</p>
                                 </div>

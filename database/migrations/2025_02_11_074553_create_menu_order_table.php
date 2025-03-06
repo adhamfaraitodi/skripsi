@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('menu_id')->constrained('menus')->noActionOnDelete();
             $table->foreignId('order_id')->constrained('orders')->noActionOnDelete();
+            $table->string('name', 50);
             $table->smallInteger('quantity');
             $table->bigInteger('price');
             $table->bigInteger('discount');

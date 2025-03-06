@@ -33,6 +33,7 @@ Route::middleware(['auth','userAuthorized' ,'verified'])->group(function (){
     //cart routes related
     Route::get('/dine-in/cart', [UserCartController::class, 'index'])->name('user.cart');
     Route::post('/cart/update', [UserCartController::class, 'updateCart'])->name('user.update-cart');
+    Route::post('/cart/remove', [UserCartController::class, 'removeCart'])->name('user.remove-cart');
     //chekout routes related
     Route::get('dine-in/checkout', [UserPaymentController::class, 'index'])->name('user.checkout');
     Route::post('dine-in/checkout', [UserPaymentController::class, 'create'])->name('user.checkout.create');

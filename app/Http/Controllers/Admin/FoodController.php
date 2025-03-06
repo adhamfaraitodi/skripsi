@@ -48,6 +48,7 @@ class FoodController extends Controller
             'quantity' => $request->foodStock,
             'transaction_type' => 'in',
             'reason' => 'initial quantity',
+            'current_quantity' => $request->foodStock,
         ]);
         return redirect()->route('food.index')->with('success', 'Food item added successfully');
     }

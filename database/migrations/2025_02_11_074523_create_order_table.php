@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('order_code',15);
             $table->enum('order_status',['pending','paid','success','cancelled']);
             $table->bigInteger('gross_amount');
-            $table->text('note');
+            $table->text('note')->nullable();
             $table->timestamps();
         });
     }

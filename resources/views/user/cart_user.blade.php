@@ -25,6 +25,10 @@
                                                 class="px-3 py-1 bg-gray-200 rounded">
                                             <i class="ph ph-plus text-sm"></i>
                                         </button>
+                                        <button onclick="removeFromCart({{ $id }})"
+                                                class="px-3 py-1 bg-red-200 text-red-600 rounded ml-2">
+                                            <i class="ph ph-x text-sm"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -91,5 +95,22 @@
                 }).catch(error => console.error("Error:", error));
         }
 
+        function removeFromCart(menuId) {
+            fetch("{{ route('user.remove-cart') }}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                },
+                body: JSON.stringify({
+                    menu_id: menuId
+                })
+            }).then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        location.reload(); // Reload the page to reflect changes
+                    }
+                }).catch(error => console.error("Error:", error));
+        }
     </script>
 @endsection

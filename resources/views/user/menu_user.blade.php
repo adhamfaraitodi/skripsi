@@ -36,10 +36,11 @@
                         <div class="flex justify-center items-center space-x-3">
                             <span class="text-black">{{ $data->favorite }}</span>
                             <button class="font-sans font-bold py-3 pr-10"
-                                    type="button"
-                                    onclick="toggleStar(this, '{{ $data->id }}')">
-                                <i class="bi {{ $data->favorite > 0 ? 'bi-star-fill' : 'bi-star' }} text-yellow-500 text-xl"></i>
+                                type="button"
+                                onclick="toggleHeart(this, '{{ $data->id }}')">
+                                <i class="bi {{ $data->favorite > 0 ? 'bi-heart-fill' : 'bi-heart' }} text-red-500 text-xl"></i>
                             </button>
+
                             @if ($data->stock === null)
                                 <button class="font-sans font-bold text-center py-3 px-6 rounded-lg bg-gray-500 text-white cursor-not-allowed"
                                         type="button"
@@ -67,10 +68,10 @@
     </div>
 @endsection
 <script>
-    function toggleStar(button, menuId) {
-        let starIcon = button.querySelector("i");
+    function toggleHeart(button, menuId) {
+        let heartIcon = button.querySelector("i");
         let favoriteCountSpan = button.previousElementSibling;
-        let isCurrentlyFavorited = starIcon.classList.contains("bi-star-fill");
+        let isCurrentlyFavorited = heartIcon.classList.contains("bi-heart-fill");
 
         fetch("{{ route('user.favorite') }}", {
             method: "POST",
@@ -80,16 +81,16 @@
             },
             body: JSON.stringify({ 
                 menu_id: menuId,
-                is_favorite: isCurrentlyFavorited ? "false" : "true"
+                is_favorite: !isCurrentlyFavorited
             })
         }).then(response => response.json())
         .then(data => {
             if (data.status === "added") {
-                starIcon.classList.remove("bi-star");
-                starIcon.classList.add("bi-star-fill");
+                heartIcon.classList.remove("bi-heart");
+                heartIcon.classList.add("bi-heart-fill");
             } else if (data.status === "removed") {
-                starIcon.classList.remove("bi-star-fill");
-                starIcon.classList.add("bi-star");
+                heartIcon.classList.remove("bi-heart-fill");
+                heartIcon.classList.add("bi-heart");
             }
             favoriteCountSpan.textContent = data.favorite_count;
         }).catch(error => console.error("Error:", error));

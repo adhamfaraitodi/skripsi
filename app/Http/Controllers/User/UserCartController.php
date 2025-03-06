@@ -21,7 +21,7 @@ class UserCartController extends Controller
     public function create(Request $request){
         $menuId = $request->input('id');
         $tableId = $request->input('table_id');
-
+    
         if (!session()->has('cart')) {
             session()->put('cart', []);
         }
@@ -31,9 +31,11 @@ class UserCartController extends Controller
             $cart[$menuId]['subtotal'] = $cart[$menuId]['quantity'] * $cart[$menuId]['price'];
         } else {
             $menu = Menu::find($menuId);
+            $originalPrice = $menu->price;
             $cart[$menuId] = [
                 'name' => $menu->name,
                 'quantity' => 1,
+                'original_price' => $originalPrice,
                 'price' => $menu->price - $menu->discount,
                 'discount' => $menu->discount,
                 'image_path' => $menu->image_path,
@@ -42,13 +44,14 @@ class UserCartController extends Controller
             ];
         }
         session()->put('cart', $cart);
-
+    
         return response()->json([
             'status' => 'success',
             'message' => 'Item added to cart successfully',
             'cart_count' => count($cart)
         ]);
     }
+    
     public function favorite(Request $request)
     {
         $menuId = $request->input('menu_id');
@@ -69,7 +72,6 @@ class UserCartController extends Controller
             'favorite_count' => $menu->favorite
         ]);
     }
-    
     public function updateCart(Request $request)
     {
         $menuId = $request->menu_id;
@@ -107,4 +109,35 @@ class UserCartController extends Controller
             'message' => 'Item not found in cart'
         ]);
     }
+    public function removeCart(Request $request)
+    {
+        $menuId = $request->menu_id;
+    
+        if (!session()->has('cart')) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Cart not found'
+            ]);
+        }
+    
+        $cart = session()->get('cart');
+    
+        if (isset($cart[$menuId])) {
+            unset($cart[$menuId]);
+            session()->put('cart', $cart);
+    
+            $total = array_sum(array_column($cart, 'subtotal'));
+    
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Item removed from cart',
+                'total' => $total
+            ]);
+        }
+    
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Item not found in cart'
+        ]);
+    }    
 }

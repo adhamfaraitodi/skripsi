@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -27,5 +28,16 @@ class OrderController extends Controller
         $data->order_status="success";
         $data->save();
         return redirect()->back();
+    }
+    public function downloadResponse($id){
+    $payment = Payment::findOrFail($id);
+
+    if (!$payment->response_json) {
+        return back()->with('error', 'No response data available.');
+    }
+    $filename = "payment_response_{$id}.txt";
+    return response($payment->response_json)
+        ->header('Content-Type', 'text/plain')
+        ->header('Content-Disposition', "attachment; filename={$filename}");
     }
 }

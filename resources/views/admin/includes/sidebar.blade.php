@@ -1,7 +1,7 @@
 <div class="sidebar fixed top-0 bottom-0 lg:left-0 p-2 w-[300px] overflow-y-auto text-center bg-gray-900">
     <div class="text-gray-100 text-xl">
         <div class="p-2.5 mt-1 flex items-center">
-            <img src="{{ asset('storage/icon/icon.png') }}" alt="Logo" class="w-8 h-9 mr-3">
+            <img src="{{ asset('storage/icon/icon.png') }}" alt="Logo" class="w-9 h-9 mr-3">
             <h1 class="font-bold text-gray-200 text-[15px]">YOSHIMIE DASHBOARD</h1>
         </div>
         <div class="my-2 bg-gray-600 h-[1px]"></div>

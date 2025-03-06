@@ -70,6 +70,7 @@ Route::prefix('superadmin')->middleware(['auth','authorized','verified'])->group
     Route::get('order-in',[OrderController::class,'index'])->name('order.index');
     Route::post('order/update/{id}',[OrderController::class,'update'])->name('order.update');
     Route::get('order-history',[OrderController::class,'history'])->name('order.history.index');
+    Route::get('/download-response/{id}', [OrderController::class, 'downloadResponse'])->name('download.response');
     //table routes related
     Route::get('table',[TableController::class,'index'])->name('table.index');
     Route::post('table/create',[TableController::class,'create'])->name('table.create');

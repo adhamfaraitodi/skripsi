@@ -34,23 +34,25 @@
                             </form>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm">
-                            <button onclick="toggleDropdown('inventory-{{ $data->id }}')" class="text-blue-600 hover:text-blue-900 flex items-center">
-                                <span>View History</span>
-                                <i class="ph ph-caret-down ml-2"></i>
-                            </button>
-
-                            <div id="inventory-{{ $data->id }}" class="hidden mt-2 bg-gray-50 rounded-lg shadow-md p-4">
-                                <h4 class="text-gray-700 font-semibold mb-2">Inventory History</h4>
-                                @foreach($data->inventory as $inventory)
-                                    <div class="px-4 py-2 bg-white rounded-md mb-2 shadow-sm">
-                                        <p class="text-sm text-gray-800 font-semibold">
-                                            {{ $inventory->created_at->format('Y-m-d H:i:s') }} -
-                                            {{ $inventory->quantity }} ({{ ucfirst($inventory->transaction_type) }})
-                                        </p>
-                                        <p class="text-sm text-gray-500 italic">Reason: {{ $inventory->reason }}</p>
-                                    </div>
-                                @endforeach
-                            </div>
+                            <x-pop-up>
+                                <x-slot name="id">
+                                    inventory-{{ $data->id }}
+                                </x-slot>
+                                <x-slot name="title">
+                                    Inventory History
+                                </x-slot>
+                                <x-slot name="content">
+                                    @foreach($data->inventory as $inventory)
+                                        <div class="px-4 py-2 bg-white rounded-md mb-2 shadow-sm">
+                                            <p class="text-sm text-gray-800 font-semibold">
+                                                {{ $inventory->created_at->format('Y-m-d H:i:s') }} -
+                                                {{ $inventory->quantity }} ({{ ucfirst($inventory->transaction_type) }})
+                                            </p>
+                                            <p class="text-sm text-gray-500 italic">Reason: {{ $inventory->reason }}</p>
+                                        </div>
+                                    @endforeach
+                                </x-slot>
+                            </x-pop-up>
                         </td>
                     </tr>
                 @empty
@@ -58,8 +60,12 @@
             </x-slot>
             <x-slot name="scripting">
                 <script>
-                    function toggleDropdown(id) {
-                        document.getElementById(id).classList.toggle('hidden');
+                    function openModal(id) {
+                        document.getElementById(id).classList.remove('hidden');
+                    }
+
+                    function closeModal(id) {
+                        document.getElementById(id).classList.add('hidden');
                     }
                 </script>
             </x-slot>

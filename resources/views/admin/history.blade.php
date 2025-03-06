@@ -31,40 +31,54 @@
                             <div class="text-sm text-gray-900 font-semibold">{{ $data->note}}</div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm">
-                            <button onclick="toggleDropdown('order-detail-{{ $data->id }}')"
-                                    class="text-blue-600 hover:text-blue-900 flex items-center transition-all duration-300">
-                                <span>View Detail</span>
-                                <i class="ph ph-caret-down ml-2"></i>
-                            </button>
-                            <div id="order-detail-{{ $data->id }}" class="hidden mt-2 bg-gray-50 rounded-lg shadow-md p-4 transition-all duration-300">
-                                <h4 class="text-gray-700 font-semibold mb-2">Order Detail</h4>
-
-                                @foreach($data->menus as $menuOrder)
+                            <x-pop-up>
+                                <x-slot name="id">
+                                    order-detail-{{ $data->id }}
+                                </x-slot>
+                                <x-slot name="title">
+                                    Order Detail
+                                </x-slot>
+                                <x-slot name="content">
+                                    @foreach($data->menus as $menuOrder)
                                     <div class="px-4 py-2 bg-white rounded-md mb-2 shadow-sm border border-gray-200">
                                         <p class="text-sm text-gray-800 font-semibold">
-                                            {{ $menuOrder->created_at->format('Y-m-d H:i:s') ?? 'N/A'}} -
+                                            {{ $menuOrder->created_at->format('Y-m-d H:i:s') }} -
                                             {{ $menuOrder->quantity }} x {{ $menuOrder->menu->name }}
                                         </p>
                                         <p class="text-sm text-gray-500 italic">Price: Rp {{ number_format($menuOrder->price, 2) }}</p>
                                         <p class="text-sm text-gray-500 italic">Subtotal: Rp {{ number_format($menuOrder->subtotal, 2) }}</p>
                                     </div>
-                                @endforeach
-                            </div>
+                                    @endforeach
+                                </x-slot>
+                            </x-pop-up>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm">
-                            <button onclick="toggleDropdown('payment-detail-{{ $data->id }}')"
-                                    class="text-blue-600 hover:text-blue-900 flex items-center transition-all duration-300">
-                                <span>View Payment Detail</span>
-                                <i class="ph ph-caret-down ml-2"></i>
-                            </button>
-                            <div id="payment-detail-{{ $data->id }}" class="hidden mt-2 bg-gray-50 rounded-lg shadow-md p-4 transition-all duration-300">
-                                <h4 class="text-gray-700 font-semibold mb-2">Order Detail</h4>
-                                <div class="px-4 py-2 bg-white rounded-md mb-2 shadow-sm border border-gray-200">
-                                <p class="text-sm text-gray-800 font-semibold">{{ optional($data->payment)->created_at ? $data->payment->created_at->format('Y-m-d H:i:s') : 'N/A' }}</p>
-                                    <p class="text-sm text-gray-500 italic">Status: {{ $data->payment->transaction_status ?? 'N/A'}}</p>
-                                    <p class="text-sm text-gray-500 italic">Payment Type: {{ $data->payment->payment_type ?? 'N/A'}}</p>
-                                </div>
-                            </div>
+                            <x-pop-up>
+                                <x-slot name="id">
+                                    payment-detail-{{ $data->id }}
+                                </x-slot>
+                                <x-slot name="title">
+                                    Payment Detail
+                                </x-slot>
+                                <x-slot name="content">
+                                    <div class="px-4 py-2 bg-white rounded-md mb-2 shadow-sm border border-gray-200">
+                                        <p class="text-sm text-gray-600 italic">ID : {{ $data->payment->transaction_id?? 'N/A'}}</p>
+                                        <p class="text-sm text-gray-600 italic">{{ optional($data->payment)->created_at ? $data->payment->created_at->format('Y-m-d H:i:s') : 'N/A' }}</p>
+                                        <p class="text-sm text-gray-600 font-semibold">Status: {{ $data->payment->transaction_status ?? 'N/A'}}</p>
+                                        <p class="text-sm text-gray-600 italic">Payment Type: {{ $data->payment->payment_type ?? 'N/A'}}</p>
+                                        <p class="text-sm text-gray-600 italic">Grand Total: Rp {{ $data->payment ? number_format($data->payment->gross_amount, 2) : 'N/A' }}</p>
+                                        @if (!empty($data->payment->response_json))
+                                            <p class="text-sm text-gray-600 italic flex items-center">
+                                                <i class="ph ph-printer mr-2 text-sm"></i>
+                                                <a href="{{ route('download.response', $data->payment->id) }}" 
+                                                class="text-blue-500 hover:underline">
+                                                Download
+                                                </a>
+                                            </p>
+                                        @endif
+                                    </div>
+                                </x-slot>
+                            </x-pop-up>
                         </td>
                     </tr>
                 @empty
@@ -72,8 +86,12 @@
             </x-slot>
             <x-slot name="scripting">
                 <script>
-                    function toggleDropdown(id) {
-                        document.getElementById(id).classList.toggle('hidden');
+                    function openModal(id) {
+                        document.getElementById(id).classList.remove('hidden');
+                    }
+
+                    function closeModal(id) {
+                        document.getElementById(id).classList.add('hidden');
                     }
                 </script>
             </x-slot>

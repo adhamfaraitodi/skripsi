@@ -34,13 +34,12 @@
                     </x-slot>
                     <x-slot name="button">
                         <div class="flex justify-center items-center space-x-3">
-                            <span class="text-black">{{ $data->favorite }}</span>
-                            <button class="font-sans font-bold py-3 pr-10"
-                                type="button"
-                                onclick="toggleHeart(this, '{{ $data->id }}')">
-                                <i class="bi {{ $data->favorite > 0 ? 'bi-heart-fill' : 'bi-heart' }} text-red-500 text-xl"></i>
-                            </button>
-
+                        <span class="text-black">{{ $data->favorite }}</span>
+                        <button class="font-sans font-bold py-3 pr-10"
+                            type="button"
+                            onclick="toggleHeart(this, '{{ $data->id }}')">
+                            <i class="bi bi-heart text-red-500 text-xl"></i>
+                        </button>
                             @if ($data->stock === null)
                                 <button class="font-sans font-bold text-center py-3 px-6 rounded-lg bg-gray-500 text-white cursor-not-allowed"
                                         type="button"

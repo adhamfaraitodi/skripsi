@@ -1,12 +1,17 @@
-<div class="sidebar fixed top-0 bottom-0 lg:left-0 p-2 w-[300px] overflow-y-auto text-center bg-gray-900">
+<span class="fixed text-black text-3xl top-5 left-7 cursor-pointer" onclick="openSidebar()">
+        <i class="ph ph-list px-2 m-2"></i>
+</span>
+<div class="sidebar fixed top-0 bottom-0 lg:left-0 p-2 w-[300px] overflow-y-auto text-center bg-gray-900 md:z-10 hidden">
     <div class="text-gray-100 text-xl">
         <div class="p-2.5 mt-1 flex items-center">
             <img src="{{ asset('storage/icon/icon.png') }}" alt="Logo" class="w-9 h-9 mr-3">
             <h1 class="font-bold text-gray-200 text-[15px]">YOSHIMIE DASHBOARD</h1>
+            <div class="pl-5" onclick="openSidebar()">
+                <i class="ph ph-arrow-left text-xl"></i>
+            </div>
         </div>
         <div class="my-2 bg-gray-600 h-[1px]"></div>
     </div>
-
 
     <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
         <i class="ph ph-house-line"></i>
@@ -75,15 +80,6 @@
 
     @auth
         @if(auth()->user()->role_id == 1)
-{{--            --}}{{-- Single: Staff --}}
-{{--            <a href="{{ route('staff.index') }}">--}}
-{{--                <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">--}}
-{{--                    <i class="ph ph-users-three"></i>--}}
-{{--                    <div class="flex justify-between w-full items-center">--}}
-{{--                        <span class="text-[15px] ml-4 text-gray-200 font-bold">Staff</span>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </a>--}}
             <!-- Dropdown: Staff -->
             <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
                  onclick="dropdown('staff-menu', 'staff-arrow')">

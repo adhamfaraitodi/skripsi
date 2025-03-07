@@ -17,10 +17,9 @@
 </head>
 <body class="bg-white">
 @include('admin.includes.sidebar')
-<div class="lg:ml-[300px] p-4">
+<div class="lg:ml-[290px] p-4">
     @include('admin.includes.navbar')
-    <main class="mt-4">
-
+    <main class="mt-4 pr-2">
         @yield('content')
     </main>
     @include('admin.includes.footer')

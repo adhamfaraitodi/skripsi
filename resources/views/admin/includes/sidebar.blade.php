@@ -1,4 +1,4 @@
-<span class="fixed text-black text-3xl top-5 left-7 cursor-pointer" onclick="openSidebar()">
+<span class="fixed text-black text-3xl top-5 mt-1 left-7 cursor-pointer " onclick="openSidebar()">
         <i class="ph ph-list px-2 m-2"></i>
 </span>
 <div class="sidebar fixed top-0 bottom-0 lg:left-0 p-2 w-[300px] overflow-y-auto text-center bg-gray-900 md:z-10 hidden">

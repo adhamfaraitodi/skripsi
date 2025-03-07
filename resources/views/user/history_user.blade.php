@@ -26,7 +26,10 @@
                             <td class="py-2 px-4 border">{{ $order->order_code }}</td>
                             <td class="py-2 px-4 border relative">
                                 <span class="px-2 py-1 rounded
-                                    {{ $order->order_status == 'success' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800' }}">
+                                    @if ($order->order_status == 'paid') bg-green-200 text-green-800
+                                    @elseif ($order->order_status == 'success') bg-yellow-200 text-yellow-800
+                                    @else bg-red-200 text-red-800
+                                    @endif">
                                     {{ ucfirst($order->order_status) }}
                                 </span>
                             </td>

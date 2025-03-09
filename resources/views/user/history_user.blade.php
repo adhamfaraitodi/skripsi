@@ -16,7 +16,6 @@
                         <th class="py-2 px-4 border">Total Amount</th>
                         <th class="py-2 px-4 border">Note</th>
                         <th class="py-2 px-4 border">Detail Order</th>
-                        <th class="py-2 px-4 border">Detail Payment</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -27,7 +26,7 @@
                             <td class="py-2 px-4 border relative">
                                 <span class="px-2 py-1 rounded
                                     @if ($order->order_status == 'paid') bg-green-200 text-green-800
-                                    @elseif ($order->order_status == 'success') bg-yellow-200 text-yellow-800
+                                    @elseif ($order->order_status == 'success') bg-green-200 text-green-800
                                     @else bg-red-200 text-red-800
                                     @endif">
                                     {{ ucfirst($order->order_status) }}
@@ -47,33 +46,22 @@
                                         @foreach($order->menus as $menuOrder)
                                             <div class="px-4 py-2 bg-white rounded-md mb-2 shadow-sm border border-gray-200">
                                                 <p class="text-sm text-gray-800 font-semibold">
-                                                    {{ $menuOrder->created_at->format('Y-m-d H:i:s') }} -
                                                     {{ $menuOrder->quantity }} x {{ $menuOrder->menu->name }}
                                                 </p>
                                                 <p class="text-sm text-gray-500 italic">Price: Rp {{ number_format($menuOrder->price, 2) }}</p>
                                                 <p class="text-sm text-gray-500 italic">Subtotal: Rp {{ number_format($menuOrder->subtotal, 2) }}</p>
                                             </div>
-                                        @endforeach
-                                </x-slot>
-                            </x-pop-up>
-                            </td>
-                            <td class="py-2 px-4 border">
-                            <x-pop-up>
-                                <x-slot name="id">
-                                    payment-detail-{{ $order->id }}
-                                </x-slot>
-                                <x-slot name="title">
-                                    Payment Detail
-                                </x-slot>
-                                <x-slot name="content">
+                                        @endforeach</br>
+                                        <h4 class="text-gray-700 font-semibold text-xl pl-4 mb-2">Payment Detail</h4>
                                         <div class="px-4 py-2 bg-white rounded-md mb-2 shadow-sm border border-gray-200">
-                                            <p class="text-sm text-gray-800 font-semibold">{{ optional($order->payment)->settlement_time ? \Carbon\Carbon::parse($order->payment->settlement_time)->format('Y-m-d H:i:s') : 'N/A' }}</p>
+                                            <p class="text-sm text-gray-800 font-semibold">{{ optional($order->payment)->settlement_time ? \Carbon\Carbon::parse($order->payment->settlement_time)->format('Y-m-d H:i:s') : 'N/A' }} - ID : {{optional($order->payment)->transaction_id?$order->payment->transaction_id :'N/A'}}</p>
                                             <p class="text-sm text-gray-500 italic">Payment: {{ $order->payment->payment_type ?? 'N/A' }}</p>
                                             <p class="text-sm text-gray-500 italic">    Grand Total: Rp {{ optional($order->payment)->gross_amount ? number_format(optional($order->payment)->gross_amount, 2) : 'N/A' }}</p>
                                         </div>
                                 </x-slot>
                             </x-pop-up>
                             </td>
+                           
                         </tr>
                     @endforeach
                     </tbody>

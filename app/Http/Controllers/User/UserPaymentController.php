@@ -11,7 +11,7 @@ use Midtrans\Config;
 use Midtrans\Snap;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\DB;
 
 class UserPaymentController extends Controller
 {
@@ -26,75 +26,95 @@ class UserPaymentController extends Controller
         $request->validate([
             'order_note' => 'nullable|string|max:500',
         ]);
-
+    
         $cart = session('cart', []);
         $table_id = session('table_id');
         $order_code = session('order_id');
         $user_id = Auth::id();
-
+    
         if (empty($cart)) {
             return response()->json(['message' => 'Cart is empty'], 400);
         }
-
-        $gross_amount = 0;
-        foreach ($cart as $item) {
-            $gross_amount += $item['subtotal'];
-        }
-
-        $order = new Order();
-        $order->user_id = $user_id;
-        $order->table_id = $table_id;
-        $order->order_code = $order_code;
-        $order->order_status = 'pending';
-        $order->gross_amount = $gross_amount;
-        $order->note = $request->order_note;
-        $order->save();
-
-        foreach ($cart as $menu_id => $item) {
-            MenuOrder::create([
-                'menu_id' => $menu_id,
-                'order_id' => $order->id,
-                'name' => $item['name'],
-                'quantity' => $item['quantity'],
-                'price' => $item['price'],
-                'discount' => $item['discount'],
-                'subtotal' => $item['subtotal'],
-            ]);
-            $latestInventory = Inventory::where('menu_id', $menu_id)->latest()->first();
-            $newQuantity = $latestInventory ? ($latestInventory->current_quantity - $item['quantity']) : 0;
-            Inventory::create([
-                'menu_id' => $menu_id,
-                'quantity' => $item['quantity'],
-                'transaction_type' => 'out',
-                'reason' => 'sold',
-                'current_quantity' => max($newQuantity, 0),
-            ]);
-        }
-        session()->forget('cart');
-
-        Config::$serverKey = config('services.midtrans.server_key');
-        Config::$isProduction = config('services.midtrans.is_production');
-        Config::$isSanitized = true;
-        Config::$is3ds = true;
-
-        $transaction_details = [
-            'order_id' => $order->order_code,
-            'gross_amount' => $order->gross_amount,
-        ];
-        $customer_details = [
-            'first_name' => Auth::user()->name,
-            'email' => Auth::user()->email,
-        ];
-        $transaction = [
-            'transaction_details' => $transaction_details,
-            'customer_details' => $customer_details,
-        ];
-        $snapToken = Snap::getSnapToken($transaction);
-        return response()->json([
-            'snap_token' => $snapToken,
-        ]);
     
+        try {
+            DB::beginTransaction();
+    
+            foreach ($cart as $menu_id => $item) {
+                $latestInventory = Inventory::where('menu_id', $menu_id)
+                    ->latest()
+                    ->sharedLock()
+                    ->first();
+    
+                $currentQuantity = $latestInventory ? $latestInventory->current_quantity : 0;
+                if ($currentQuantity < $item['quantity']) {
+                    return response()->json(['message' => "Insufficient stock for menu ID {$menu_id}"], 400);
+                }
+            }
+    
+            $gross_amount = array_reduce($cart, fn($sum, $item) => $sum + $item['subtotal'], 0);
+    
+            $order = Order::create([
+                'user_id' => $user_id,
+                'table_id' => $table_id,
+                'order_code' => $order_code,
+                'order_status' => 'pending',
+                'gross_amount' => $gross_amount,
+                'note' => $request->order_note,
+            ]);
+    
+            foreach ($cart as $menu_id => $item) {
+                MenuOrder::create([
+                    'menu_id' => $menu_id,
+                    'order_id' => $order->id,
+                    'name' => $item['name'],
+                    'quantity' => $item['quantity'],
+                    'price' => $item['price'],
+                    'discount' => $item['discount'],
+                    'subtotal' => $item['subtotal'],
+                ]);
+    
+                $latestInventory = Inventory::where('menu_id', $menu_id)
+                    ->latest()
+                    ->lockForUpdate()
+                    ->first();
+    
+                $newQuantity = $latestInventory ? $latestInventory->current_quantity - $item['quantity'] : 0;
+                Inventory::create([
+                    'menu_id' => $menu_id,
+                    'quantity' => $item['quantity'],
+                    'transaction_type' => 'out',
+                    'reason' => 'sold',
+                    'current_quantity' => max($newQuantity, 0),
+                ]);
+            }
+    
+            DB::commit();
+            session()->forget('cart');
+    
+            Config::$serverKey = config('services.midtrans.server_key');
+            Config::$isProduction = config('services.midtrans.is_production');
+            Config::$isSanitized = true;
+            Config::$is3ds = true;
+    
+            $transaction = [
+                'transaction_details' => [
+                    'order_id' => $order->order_code,
+                    'gross_amount' => $order->gross_amount,
+                ],
+                'customer_details' => [
+                    'first_name' => Auth::user()->name,
+                    'email' => Auth::user()->email,
+                ],
+            ];
+    
+            $snapToken = Snap::getSnapToken($transaction);
+            return response()->json(['snap_token' => $snapToken]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['message' => 'Checkout failed', 'error' => $e->getMessage()], 500);
+        }
     }
+    
     public function pop(){
         return view('user.thank_you');
     }

@@ -9,9 +9,9 @@
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">order code</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">gross amount</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">note</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">order by</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">action</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">detail</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">payment detail</th>
             </x-slot>
             <x-slot name="row">
                 @forelse($datas as $data)
@@ -30,6 +30,9 @@
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="text-sm text-gray-900 font-semibold">{{ $data->note}}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-900 font-semibold">{{ $data->user->name}}</div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <form action="{{ route('order.update', $data->id) }}" method="POST" class="flex items-center" onsubmit="return confirm('Do you want to finish this order');">
@@ -61,19 +64,8 @@
                                         <p class="text-sm text-gray-500 italic">Price: Rp {{ number_format($menuOrder->price, 2) }}</p>
                                         <p class="text-sm text-gray-500 italic">Subtotal: Rp {{ number_format($menuOrder->subtotal, 2) }}</p>
                                     </div>
-                                    @endforeach
-                                </x-slot>
-                            </x-pop-up>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm">
-                            <x-pop-up>
-                                <x-slot name="id">
-                                    payment-detail-{{ $data->id }}
-                                </x-slot>
-                                <x-slot name="title">
-                                    Payment Detail
-                                </x-slot>
-                                <x-slot name="content">
+                                    @endforeach</br>
+                                    <h4 class="text-gray-700 font-semibold text-xl pl-4 mb-2">Payment Details</h4>
                                     <div class="px-4 py-2 bg-white rounded-md mb-2 shadow-sm border border-gray-200">
                                         <p class="text-sm text-gray-600 italic">ID : {{ $data->payment->transaction_id?? 'N/A'}}</p>
                                         <p class="text-sm text-gray-600 italic">{{ optional($data->payment)->created_at ? $data->payment->created_at->format('Y-m-d H:i:s') : 'N/A' }}</p>

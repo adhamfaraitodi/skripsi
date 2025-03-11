@@ -6,6 +6,7 @@
         <x-table-data :name="'History Order Table'">
             <x-slot name="column">
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">status order</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">order table</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">order code</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">gross amount</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">note</th>
@@ -20,6 +21,9 @@
                                 {{ $data->order_status == 'success' ? 'text-green-600' : 'text-red-600' }}">
                                 {{ ucfirst($data->order_status) }}
                             </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-900 font-semibold">{{ $data->table->number}}</div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="text-sm text-gray-900 font-semibold">{{ $data->order_code}}</div>

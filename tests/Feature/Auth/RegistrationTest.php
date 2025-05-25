@@ -4,11 +4,18 @@ namespace Tests\Feature\Auth;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use App\Models\Role;
 
 class RegistrationTest extends TestCase
 {
     use RefreshDatabase;
-
+    protected function setUp(): void
+    {
+        parent::setUp();
+        Role::factory()->admin()->create();
+        Role::factory()->manager()->create();
+        Role::factory()->user()->create();
+    }
     public function test_registration_screen_can_be_rendered(): void
     {
         $response = $this->get('/register');

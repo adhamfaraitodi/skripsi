@@ -20,6 +20,6 @@ class EnsureOnlyAdmin
         if ($user && in_array($user->role_id, [1])) {
             return $next($request);
         }
-        return redirect('superadmin.dashboard');
+        return redirect()->route('superadmin.dashboard');
     }
 }

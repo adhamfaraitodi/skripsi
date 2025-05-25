@@ -6,6 +6,7 @@
                 <h2 class="text-xl font-semibold text-gray-800">YOSHIMIE RESTAURANT</h2>
             </div>
         </a>
+        
         <div class="flex items-center space-x-4">
             @auth
                 <a href="{{ route('user.cart') }}" class="text-gray-500 hover:text-gray-700 relative group">

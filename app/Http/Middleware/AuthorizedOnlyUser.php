@@ -20,6 +20,6 @@ class AuthorizedOnlyUser
         if ($user && in_array($user->role_id, [3])) {
             return $next($request);
         }
-        return redirect('login');
+        return redirect()->route('login');
     }
 }

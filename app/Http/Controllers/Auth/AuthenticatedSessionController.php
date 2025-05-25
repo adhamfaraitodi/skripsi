@@ -43,7 +43,8 @@ class AuthenticatedSessionController extends Controller
         }
 
         if ($user->role_id == 3) {
-            return redirect()->back();
+            // return redirect()->back();
+            return redirect()->intended(route('dashboard'));
         }
         Auth::logout();
         return redirect()->route('login')->withErrors(['error' => 'Unknown data']);

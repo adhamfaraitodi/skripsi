@@ -24,8 +24,8 @@ Route::get('/dine-in', [UserMenuController::class, 'index'])->name('user.dine-in
 Route::post('/cart/add', [UserCartController::class, 'create'])->name('user.add-cart');
 Route::post('/favorite', [UserCartController::class, 'favorite'])->name('user.favorite');
 
-Route::middleware(['auth','userAuthorized' ,'verified'])->group(function (){
-    Route::get('table', [UserTableController::class, 'index'])->name('dashboard');
+Route::middleware(['auth','verified','userAuthorized' ])->group(function (){
+    Route::get('/table', [UserTableController::class, 'index'])->name('dashboard');
     //profile routes related
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

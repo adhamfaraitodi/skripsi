@@ -6,11 +6,18 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
+use App\Models\Role;
 
 class PasswordUpdateTest extends TestCase
 {
     use RefreshDatabase;
-
+    protected function setUp(): void
+    {
+        parent::setUp();
+        Role::factory()->admin()->create();
+        Role::factory()->manager()->create();
+        Role::factory()->user()->create();
+    }
     public function test_password_can_be_updated(): void
     {
         $user = User::factory()->create();

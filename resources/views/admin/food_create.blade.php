@@ -20,15 +20,22 @@
                                    required
                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                         </div>
-                        <div>
+                        <div class="mt-4">
                             <label for="foodDesc" class="block text-sm font-medium text-gray-700">
                                 Description <span class="text-red-500">*</span>
                             </label>
+
                             <textarea name="foodDesc"
-                                      id="foodDesc"
-                                      rows="3"
-                                      required
-                                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+                                    id="foodDesc"
+                                    rows="3"
+                                    maxlength="130"
+                                    required
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                    placeholder="Enter description (max 130 characters)"></textarea>
+
+                            <div class="text-sm text-gray-500 text-right mt-1">
+                                <span id="charCount">0</span>/130 characters
+                            </div>
                         </div>
                         <div>
                             <label for="foodImg" class="block text-sm font-medium text-gray-700">
@@ -116,4 +123,20 @@
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const textarea = document.getElementById('foodDesc');
+            const counter = document.getElementById('charCount');
+
+            textarea.addEventListener('input', function () {
+                let length = textarea.value.length;
+                if (length > 130) {
+                    textarea.value = textarea.value.slice(0, 130);
+                    length = 130;
+                }
+
+                counter.textContent = length;
+            });
+        });
+    </script>
 @endsection

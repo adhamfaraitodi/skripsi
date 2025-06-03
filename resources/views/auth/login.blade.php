@@ -1,4 +1,9 @@
 <x-guest-layout>
+    <!-- Logo -->
+    <div class="flex flex-col items-center mb-6">
+        <img src="{{ asset('storage/icon/icon.png') }}" alt="App Logo" class="w-20 h-20">
+        <h2 class="text-xl font-semibold mt-2 text-gray-800 dark:text-white">YOSHIMIE RESTAURANT</h2>
+    </div>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 

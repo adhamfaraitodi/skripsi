@@ -1,93 +1,100 @@
 @extends('user.layouts.app')
 @section('content')
-    <div class="p-6">
+    <div class="p-4 sm:p-6">
         <!-- Search Section -->
-        <div class="flex justify-center mb-6">
-            <div class="flex items-center w-full max-w-3xl">
+        <div class="flex justify-center mb-6 px-2">
+            <div class="relative w-full max-w-3xl">
                 <input
                     type="text"
                     id="searchInput"
                     placeholder="Search menu by name, keyword, or category..."
-                    class="flex-grow focus:outline-none rounded-2xl px-3 py-2 border-[1px] border-gray-300"
+                    class="w-full rounded-2xl border border-gray-300 py-2 pl-4 pr-10 text-sm focus:outline-none"
                     value="{{ request('query') }}"
                 />
                 <button
                     id="searchButton"
-                    class="ml-2 text-gray-500 hover:text-gray-700"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
                 >
-                    <!-- Magnifying Glass SVG Icon -->
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M21 21L16.514 16.506L21 21ZM19 10.5C19 15.194 15.194 19 10.5 19C5.806 19 2 15.194 2 10.5C2 5.806 5.806 2 10.5 2C15.194 2 19 5.806 19 10.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path d="M21 21L16.514 16.506M19 10.5C19 15.194 15.194 19 10.5 19C5.806 19 2 15.194 2 10.5C2 5.806 5.806 2 10.5 2C15.194 2 19 5.806 19 10.5Z"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </button>
+
                 <button
                     id="clearButton"
-                    class="ml-2 text-gray-500 hover:text-gray-700 {{ request('query') ? '' : 'hidden' }}"
+                    class="absolute right-10 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 {{ request('query') ? '' : 'hidden' }}"
                 >
-                    <!-- X Icon -->
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path d="M18 6L6 18M6 6L18 18"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </button>
             </div>
         </div>
-        <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-5 justify-center">
+
+        <!-- Menu Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-5 justify-center">
             @foreach ($datas as $data)
                 <x-card>
                     <x-slot name="content">
-                        <img src="{{ Storage::url($data->image_path) }}" class="w-full h-full object-cover">
+                        <img src="{{ Storage::url($data->image_path) }}" class="w-full h-full object-cover rounded-xl">
                     </x-slot>
+
                     <x-slot name="tittle">
-                        <div class="flex items-center justify-between mb-2">
-                            <p class="block font-sans text-base antialiased font-medium leading-relaxed text-blue-gray-900">
+                        <div class="flex items-start justify-between gap-2 mb-2">
+                            <p class="font-sans text-sm sm:text-base font-medium text-blue-gray-900 flex-1">
                                 {{ $data->name }}
                             </p>
                             @php
                                 $discountedPrice = $data->price - $data->discount;
                             @endphp
-                            <p class="block font-sans text-base antialiased font-medium leading-relaxed text-blue-gray-900">
+                            <div class="text-right whitespace-nowrap">
                                 @if ($data->discount > 0)
-                                    <span class="text-red-600 line-through block text-sm">Rp {{ number_format($data->price, 0, ',', '.') }}</span>
-                                    <span class="text-black font-bold block">Rp {{ number_format($discountedPrice, 0, ',', '.') }}</span>
+                                    <span class="text-red-600 line-through text-xs block">Rp {{ number_format($data->price, 0, ',', '.') }}</span>
+                                    <span class="text-black font-bold text-sm block">Rp {{ number_format($discountedPrice, 0, ',', '.') }}</span>
                                 @else
-                                    <span class="text-black font-bold block">Rp {{ number_format($discountedPrice, 0, ',', '.') }}</span>
+                                    <span class="text-black font-bold text-sm block">Rp {{ number_format($discountedPrice, 0, ',', '.') }}</span>
                                 @endif
-                            </p>
+                            </div>
                         </div>
                     </x-slot>
+
                     <x-slot name="description">
-                        {{ $data->description }}
-                        <br>
-                        <span class="font-medium">Stock:</span> 
-                        {{ $data->stock === null ? 'N/A' : $data->stock }}<br>
-                        <span class="font-medium">Category:</span> {{ $data->category->name }}
+                        <p class="text-sm leading-snug">
+                            {{ $data->description }}<br>
+                            <span class="font-medium">Stock:</span> {{ $data->stock === null ? 'N/A' : $data->stock }}<br>
+                            <span class="font-medium">Category:</span> {{ $data->category->name }}
+                        </p>
                     </x-slot>
+
                     <x-slot name="button">
-                        <div class="flex justify-center items-center space-x-3">
-                        <span class="text-black">{{ $data->favorite }}</span>
-                        <button class="font-sans font-bold py-3 pr-10"
-                            type="button"
-                            onclick="toggleHeart(this, '{{ $data->id }}')">
-                            <i class="bi bi-heart text-red-500 text-xl"></i>
-                        </button>
-                            @if ($data->stock === null)
-                                <button class="font-sans font-bold text-center py-3 px-6 rounded-lg bg-gray-500 text-white cursor-not-allowed"
+                        <div class="flex flex-wrap justify-center sm:justify-between items-center gap-3">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-black text-sm">{{ $data->favorite }}</span>
+                                <button class="font-sans font-bold text-xl text-red-500"
                                         type="button"
-                                        disabled>
+                                        onclick="toggleHeart(this, '{{ $data->id }}')">
+                                    <i class="bi bi-heart"></i>
+                                </button>
+                            </div>
+
+                            @if ($data->stock === null)
+                                <button class="font-sans font-bold py-2 px-4 rounded-lg bg-gray-500 text-white text-sm cursor-not-allowed"
+                                        type="button" disabled>
                                     Not Available
                                 </button>
                             @elseif ($data->stock == 0)
-                                <button class="font-sans font-bold text-center py-3 px-6 rounded-lg bg-red-500 text-white cursor-not-allowed"
-                                        type="button"
-                                        disabled>
+                                <button class="font-sans font-bold py-2 px-4 rounded-lg bg-red-500 text-white text-sm cursor-not-allowed"
+                                        type="button" disabled>
                                     Sold Out
                                 </button>
                             @else
-                            <button class="font-sans font-bold text-center py-3 px-6 rounded-lg bg-blue-500 text-white"
-                                    type="button"
-                                    onclick="addToCart(event, '{{ $data->id }}')">
-                                Add to Cart
-                            </button>
+                                <button class="font-sans font-bold py-2 px-4 rounded-lg bg-blue-500 text-white text-sm"
+                                        type="button"
+                                        onclick="addToCart(event, '{{ $data->id }}')">
+                                    Add to Cart
+                                </button>
                             @endif
                         </div>
                     </x-slot>
@@ -141,13 +148,11 @@
             }).catch(error => console.error("Error:", error));
     }
     
-    //search guery
     document.addEventListener('DOMContentLoaded', function() {
         const searchInput = document.getElementById('searchInput');
         const searchButton = document.getElementById('searchButton');
         const clearButton = document.getElementById('clearButton');
         
-        // Handle search function
         function handleSearch() {
             const searchQuery = searchInput.value.trim();
             if (searchQuery !== '') {
@@ -157,26 +162,21 @@
             }
         }
         
-        // Handle clear search function
         function handleClearSearch() {
             const url = new URL(window.location.href);
             url.searchParams.delete('query');
             window.location.href = url.toString();
         }
         
-        // Handle enter key press
         function handleKeyPress(e) {
             if (e.key === 'Enter') {
                 handleSearch();
             }
         }
         
-        // Event listeners
         searchButton.addEventListener('click', handleSearch);
         clearButton.addEventListener('click', handleClearSearch);
         searchInput.addEventListener('keydown', handleKeyPress);
-        
-        // Show/hide clear button based on input value
         searchInput.addEventListener('input', function() {
             if (this.value.trim() !== '') {
                 clearButton.classList.remove('hidden');

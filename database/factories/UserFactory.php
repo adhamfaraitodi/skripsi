@@ -50,11 +50,9 @@ class UserFactory extends Factory
      */
     private function getOrCreateRole(): int
     {
-        // Try to get existing user role first
         $role = Role::where('name', 'user')->first();
         
         if (!$role) {
-            // If no role exists, create one
             $role = Role::factory()->user()->create();
         }
         

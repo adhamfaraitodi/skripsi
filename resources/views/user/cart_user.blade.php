@@ -1,63 +1,75 @@
 @extends('user.layouts.app')
 @section('content')
     <div class="p-6">
-        <div class="max-w-4xl mx-auto">
-            <h2 class="text-2xl font-bold mb-4">Shopping Cart</h2>
+        <div class="max-w-2xl mx-auto">
+            <h2 class="text-2xl font-bold mb-6">Shopping Cart</h2>
 
             @if(count($cart) > 0)
-                <div class="space-y-4">
+                <div class="space-y-6">
                     @foreach($cart as $id => $details)
-                        <div class="flex items-center justify-between border p-4 rounded">
-                            <div class="flex items-center space-x-4">
-                                <img src="{{ Storage::url($details['image_path']) }}" class="w-20 h-20 object-cover rounded">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border rounded-lg p-4 shadow-sm">
+                            <div class="flex items-start gap-4">
+                                <img src="{{ Storage::url($details['image_path']) }}" alt="{{ $details['name'] }}"
+                                    class="w-20 h-20 object-cover rounded-lg border">
+
                                 <div>
-                                    <h3 class="font-bold">{{ $details['name'] }}</h3>
-                                    <p>Price: Rp {{ number_format($details['price'], 0, ',', '.') }}</p>
-                                    <div class="flex items-center space-x-2 mt-2">
+                                    <h3 class="font-semibold text-base">{{ $details['name'] }}</h3>
+                                    <p class="text-sm text-gray-600">Price: Rp {{ number_format($details['price'], 0, ',', '.') }}</p>
+
+                                    <div class="flex items-center mt-2 space-x-2">
                                         <button onclick="updateQuantity({{ $id }}, 'decrease')"
-                                                class="px-3 py-1 bg-gray-200 rounded">
+                                                class="w-8 h-8 bg-gray-200 rounded flex items-center justify-center">
                                             <i class="ph ph-minus text-sm"></i>
                                         </button>
-                                        <span id="quantity-{{ $id }}" class="px-4">
+
+                                        <span id="quantity-{{ $id }}" class="w-6 text-center">
                                             {{ $details['quantity'] }}
                                         </span>
+
                                         <button onclick="updateQuantity({{ $id }}, 'increase')"
-                                                class="px-3 py-1 bg-gray-200 rounded">
+                                                class="w-8 h-8 bg-gray-200 rounded flex items-center justify-center">
                                             <i class="ph ph-plus text-sm"></i>
                                         </button>
+
                                         <button onclick="removeFromCart({{ $id }})"
-                                                class="px-3 py-1 bg-red-200 text-red-600 rounded ml-2">
+                                                class="w-8 h-8 bg-red-100 text-red-500 rounded flex items-center justify-center ml-2">
                                             <i class="ph ph-x text-sm"></i>
                                         </button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="text-right">
-                                <p class="font-bold" id="subtotal-{{ $id }}">
+
+                            <div class="text-right mt-2 sm:mt-0 sm:min-w-[140px]">
+                                <p class="text-sm font-semibold" id="subtotal-{{ $id }}">
                                     Subtotal: Rp {{ number_format($details['price'] * $details['quantity'], 0, ',', '.') }}
                                 </p>
                             </div>
                         </div>
                     @endforeach
 
-                    <div class="border-t pt-4">
-                        <div class="text-right">
-                            <p class="text-lg font-bold pr-4" id="total-amount">Grand Total: Rp {{ number_format($total, 0, ',', '.') }}</p>
+                    <div class="border-t pt-6">
+                        <div class="text-right mb-4">
+                            <p class="text-lg font-bold" id="total-amount">
+                                Grand Total: Rp {{ number_format($total, 0, ',', '.') }}
+                            </p>
                         </div>
-                        <div class="flex space-x-4 mt-4">
+
+                        <div class="flex flex-col sm:flex-row sm:justify-end sm:space-x-4 space-y-3 sm:space-y-0">
                             <a href="{{ route('user.dine-in') }}">
-                                <button class="font-sans font-bold text-center py-3 px-6 rounded-lg bg-gray-200 text-gray-800">
+                                <button class="w-full sm:w-auto font-bold py-3 px-6 rounded-lg bg-gray-200 text-gray-800 text-sm">
                                     Back to Menu
                                 </button>
                             </a>
-                            <a href="{{ route('user.checkout') }}" class="font-sans font-bold text-center py-3 px-6 rounded-lg bg-blue-600 text-white">
-                                Checkout Order
+                            <a href="{{ route('user.checkout') }}">
+                                <button class="w-full sm:w-auto font-bold py-3 px-6 rounded-lg bg-blue-600 text-white text-sm hover:bg-blue-700">
+                                    Checkout Order
+                                </button>
                             </a>
                         </div>
                     </div>
                 </div>
             @else
-                <p>Your cart is empty</p>
+                <p class="text-center text-gray-500 mt-10">Your cart is empty.</p>
             @endif
         </div>
     </div>
@@ -108,7 +120,7 @@
             }).then(response => response.json())
                 .then(data => {
                     if (data.status === 'success') {
-                        location.reload(); // Reload the page to reflect changes
+                        location.reload();
                     }
                 }).catch(error => console.error("Error:", error));
         }

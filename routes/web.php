@@ -37,6 +37,7 @@ Route::middleware(['auth','verified','userAuthorized' ])->group(function (){
     //chekout routes related
     Route::get('dine-in/checkout', [UserPaymentController::class, 'index'])->name('user.checkout');
     Route::post('dine-in/checkout', [UserPaymentController::class, 'create'])->name('user.checkout.create');
+    Route::post('continue-payment', [UserPaymentController::class, 'continuePayment'])->name('user.continue-payment');
     //order history routes related
     Route::get('/order/history', [UserHistoryController::class, 'index'])->name('user.history');
     //redirect

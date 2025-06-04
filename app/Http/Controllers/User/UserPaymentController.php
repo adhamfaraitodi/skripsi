@@ -119,4 +119,31 @@ class UserPaymentController extends Controller
         return view('user.thank_you');
     }
 
+    public function continuePayment(Request $request)
+    {
+        $order = Order::where('order_code', $request->order_code)
+                  ->where('order_status', 'pending')
+                  ->firstOrFail();
+        Config::$serverKey = config('services.midtrans.server_key');
+        Config::$isProduction = config('services.midtrans.is_production');
+        Config::$isSanitized = true;
+        Config::$is3ds = true;
+        $payload = [
+            'transaction_details' => [
+                'order_id'     => $order->order_code,
+                'gross_amount' => $order->gross_amount,
+            ],
+            'customer_details' => [
+                'first_name' => $order->user->name,
+                'email'      => $order->user->email,
+            ],
+        ];
+
+        try {
+            $snapToken = Snap::getSnapToken($payload);
+            return response()->json(['snap_token' => $snapToken]);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Failed to continue payment.'], 500);
+        }
+    }
 }

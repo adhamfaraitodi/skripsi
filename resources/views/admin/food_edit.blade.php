@@ -69,39 +69,39 @@
 
                         <!-- Price -->
                         <div>
-                            <label for="foodPrice" class="block text-sm font-medium text-gray-700">
+                            <label for="foodPrice_display" class="block text-sm font-medium text-gray-700">
                                 Price <span class="text-red-500">*</span>
                             </label>
                             <div class="mt-1 relative rounded-md shadow-sm">
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <span class="text-gray-500 sm:text-sm">Rp</span>
                                 </div>
-                                <input type="number"
-                                       name="foodPrice"
-                                       id="foodPrice"
-                                       value="{{ $data->price}}"
-                                       required
-                                       min="0"
-                                       class="pl-12 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                <input type="text"
+                                    id="foodPrice_display"
+                                    value="{{ $data->price}}"
+                                    class="pl-12 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                    oninput="formatNumber(this, 'foodPrice')"
+                                    onblur="formatNumber(this, 'foodPrice')">
+                                <input type="hidden" name="foodPrice" id="foodPrice" value="0" required>
                             </div>
                         </div>
 
                         <!-- Discount -->
                         <div>
-                            <label for="foodPrice" class="block text-sm font-medium text-gray-700">
+                            <label for="foodDisc_display" class="block text-sm font-medium text-gray-700">
                                 Discount <span class="text-red-500">*</span>
                             </label>
                             <div class="mt-1 relative rounded-md shadow-sm">
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <span class="text-gray-500 sm:text-sm">Rp</span>
                                 </div>
-                                <input type="number"
-                                       name="foodDisc"
-                                       id="foodDisc"
-                                       required
-                                       value="{{ $data->discount}}"
-                                       min="0"
-                                       class="pl-12 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                <input type="text"
+                                    id="foodDisc_display"
+                                    value="{{ $data->discount}}"
+                                    class="pl-12 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                    oninput="formatNumber(this, 'foodDisc')"
+                                    onblur="formatNumber(this, 'foodDisc')">
+                                <input type="hidden" name="foodDisc" id="foodDisc" value="0" required>
                             </div>
                         </div>
 
@@ -121,4 +121,26 @@
             </div>
         </div>
     </div>
+    <script>
+        function formatNumber(input, hiddenFieldId) {
+            let value = input.value.replace(/[^\d]/g, '');
+            let numValue = parseInt(value) || 0;
+            let formatted = numValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            input.value = formatted;
+            let hiddenInput = document.getElementById(hiddenFieldId);
+            if (hiddenInput) {
+                hiddenInput.value = numValue;
+            }
+            updateDisplay();
+        }
+        
+        function updateDisplay() {
+            document.getElementById('priceDisplay').textContent = document.getElementById('foodPrice').value;
+            document.getElementById('discDisplay').textContent = document.getElementById('foodDisc').value;
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            formatNumber(document.getElementById('foodPrice_display'), 'foodPrice');
+            formatNumber(document.getElementById('foodDisc_display'), 'foodDisc');
+        });
+    </script>
 @endsection

@@ -23,7 +23,7 @@ class PaymentFactory extends Factory
             'order_code' => 'order-' . $this->faker->unique()->randomLetter() . $this->faker->unique()->bothify('########'),
             'transaction_id' => $this->faker->uuid(),
             'transaction_status' => $this->faker->randomElement(['pending', 'settlement', 'capture', 'deny', 'cancel', 'expire', 'failure']),
-            'payment_type' => $this->faker->randomElement(['qris', 'bank_transfer', 'credit_card', 'gopay', 'shopeepay', 'other_va']),
+            'payment_type' => $this->faker->randomElement(['credit_card', 'gopay', 'shopeepay', 'qris', 'cstore', 'bank_transfer', 'echannel']),
             'gross_amount' => $this->faker->numberBetween(10000, 500000),
             'transaction_time' => $transactionTime,
             'settlement_time' => $settlementTime,

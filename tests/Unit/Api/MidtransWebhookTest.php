@@ -107,8 +107,6 @@ class MidtransWebhookTest extends TestCase
         $request = Request::create('/api/webhook', 'POST', $requestData);
         
         $response = $this->controller->index($request);
-        
-        // Assert response must return 200 OK
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertDatabaseHas('payments', [
             'order_code' => $orderCode,
@@ -141,13 +139,9 @@ class MidtransWebhookTest extends TestCase
         $request = Request::create('/api/webhook', 'POST', $requestData);
         
         $response = $this->controller->index($request);
-        
-        // Assert 403 response
         $this->assertEquals(403, $response->getStatusCode());
         $responseData = json_decode($response->getContent(), true);
         $this->assertEquals('Invalid signature', $responseData['message']);
-        
-        // Assert no payment was created
         $this->assertDatabaseMissing('payments', [
             'order_code' => 'order-invalid'
         ]);
@@ -219,18 +213,13 @@ class MidtransWebhookTest extends TestCase
         $request = Request::create('/api/webhook', 'POST', $requestData);
         
         $response = $this->controller->index($request);
-        
-        // Assert response must return 200 OK
         $this->assertEquals(200, $response->getStatusCode());
-        
-        // Assert payment was updated with new details
         $this->assertDatabaseHas('payments', [
             'id' => $existingPayment->id,
             'order_code' => $orderCode,
             'transaction_status' => 'settlement',
             'transaction_id' => 'updated-transaction-id'
         ]);
-        //Check that no new payment was created
         $this->assertDatabaseCount('payments', 1);
     }
 

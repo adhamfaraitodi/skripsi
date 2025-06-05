@@ -58,7 +58,7 @@
                 </div>
             @else
                 <a href="{{ route('login') }}" class="text-gray-500 hover:text-gray-700">Login</a>
-                <a href="{{ route('register') }}" class="text-gray-500 hover:text-gray-700 hidden sm:inline">Register</a>
+                <a href="{{ route('register') }}" class="text-gray-500 hover:text-gray-700 ">Register</a>
             @endauth
         </div>
     </div>

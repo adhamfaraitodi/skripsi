@@ -97,10 +97,11 @@ class FoodController extends Controller
         $data->save();
         return redirect()->back();
     }
-    public function remove($id){
-        $data=Menu::findorfail($id);
+    public function remove($id)
+    {
+        $data = Menu::findOrFail($id);
         $data->delete();
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Food item removed successfully');
     }
     public function trash(){
         $datas=Menu::onlyTrashed()->get();

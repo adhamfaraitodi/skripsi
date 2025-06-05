@@ -19,8 +19,6 @@ class UserMenuController extends Controller
         }
 
         $query = Menu::withoutTrashed()->with('category');
-        
-        // Handle search functionality
         if ($request->has('query') && !empty($request->get('query'))) {
             $searchTerm = $request->get('query');
             $query->where(function($q) use ($searchTerm) {
@@ -33,8 +31,6 @@ class UserMenuController extends Controller
         }
         
         $datas = $query->get();
-        
-        // Add stock information
         foreach ($datas as $data) {
             $latestInventory = Inventory::where('menu_id', $data->id)->latest()->first();
             $data->stock = $latestInventory ? $latestInventory->current_quantity : 0;

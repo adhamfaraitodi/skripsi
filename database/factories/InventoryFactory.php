@@ -18,7 +18,11 @@ class InventoryFactory extends Factory
     public function definition(): array
     {
         return [
-            'menu_id'=>Menu::factory(),
+            'menu_id' => Menu::factory(),
+            'quantity' => $this->faker->numberBetween(1, 100),
+            'current_quantity' => $this->faker->numberBetween(0, 200),
+            'transaction_type' => $this->faker->randomElement(['in', 'out']),
+            'reason' => $this->faker->sentence(),
         ];
     }
 }

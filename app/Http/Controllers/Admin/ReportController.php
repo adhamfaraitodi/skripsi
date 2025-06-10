@@ -5,20 +5,31 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Inventory;
 use App\Models\Menu;
-use App\Models\MenuOrder;
 use App\Models\Order;
 use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
+        if ($request->has('month_year')) {
+            try {
+                $date = Carbon::createFromFormat('m-Y', $request->input('month_year'));
+                $month = $date->month;
+                $year = $date->year;
+            } catch (\Exception $e) {
+                $month = now()->month;
+                $year = now()->year;
+            }
+        } else {
+            $month = now()->month;
+            $year = now()->year;
+        }
         $datas = Order::with(['menus', 'payment'])
             ->where('order_status','success')
-            ->whereMonth('created_at', Carbon::now()->month)
-            ->whereYear('created_at', Carbon::now()->year)
+            ->whereMonth('created_at', $month)
+            ->whereYear('created_at', $year)
             ->orderBy('created_at','asc')
             ->get();
         $total = $datas->sum('gross_amount');
@@ -26,19 +37,45 @@ class ReportController extends Controller
         $mostSoldItem = $this->mostSoldItem();
         return view('admin/report_sales',compact('datas','total','mostFavoriteMenu','mostSoldItem'));
     }
-    public function inventory(){
+    public function inventory(Request $request){
+        if ($request->has('month_year')) {
+            try {
+                $date = Carbon::createFromFormat('m-Y', $request->input('month_year'));
+                $month = $date->month;
+                $year = $date->year;
+            } catch (\Exception $e) {
+                $month = now()->month;
+                $year = now()->year;
+            }
+        } else {
+            $month = now()->month;
+            $year = now()->year;
+        }
         $datas = Inventory::with('menu')
-            ->whereMonth('created_at', Carbon::now()->month)
-            ->whereYear('created_at', Carbon::now()->year)
+            ->whereMonth('created_at', $month)
+            ->whereYear('created_at', $year)
             ->orderBy('created_at','asc')
             ->get();
         return view('admin/report_inventory',compact('datas'));
     }
-    public function financial()
+    public function financial(Request $request)
     {
+        if ($request->has('month_year')) {
+            try {
+                $date = Carbon::createFromFormat('m-Y', $request->input('month_year'));
+                $month = $date->month;
+                $year = $date->year;
+            } catch (\Exception $e) {
+                $month = now()->month;
+                $year = now()->year;
+            }
+        } else {
+            $month = now()->month;
+            $year = now()->year;
+        }
         $datas = Payment::where('transaction_status', 'settlement')
-            ->whereMonth('created_at', Carbon::now()->month)
-            ->whereYear('created_at', Carbon::now()->year)
+            ->whereMonth('created_at', $month)
+            ->whereYear('created_at', $year)
             ->orderBy('created_at', 'asc')
             ->get();
         $monthlyTotal = $this->monthlyTotal();

@@ -1,11 +1,11 @@
-<div class="mt-6 flex justify-between items-center print:hidden">
-    <div class="space-x-2">
-        <button onclick="printSection();"
-                class="px-4 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600">
-            <i class="ph ph-printer mr-2"></i> Print
-        </button>
-    </div>
+<div class="mt-6 flex justify-between items-center gap-4 print:hidden">
+    <button onclick="printSection();"
+            class="px-4 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600">
+        <i class="ph ph-printer mr-2"></i> Print
+    </button>
+    <x-month-picker />
 </div>
+
 <div id="printable-content">
     <div class="flex items-center justify-center border-b border-gray-400 pb-5 mb-6">
         <img src="{{ asset('storage/icon/icon.png') }}" alt="Logo" class="w-10 mr-4">
@@ -19,5 +19,18 @@
 
     <div class="text-center mb-6">
         <h1 class="text-1xl font-semibold uppercase">{{$title}}</h1>
-        <p class="text-lg text-gray-600">Bulan: {{ Carbon\Carbon::now()->format('F Y') }}</p>
+        @php
+            $monthYear = request('month_year');
+            $displayMonth = Carbon\Carbon::now()->format('F Y'); // Default
+            
+            if ($monthYear) {
+                try {
+                    $displayMonth = Carbon\Carbon::createFromFormat('m-Y', $monthYear)->format('F Y');
+                } catch (Exception $e) {
+                    // If parsing fails, keep the default (current month)
+                    $displayMonth = Carbon\Carbon::now()->format('F Y');
+                }
+            }
+        @endphp
+        <p class="text-lg text-gray-600">Bulan: {{ $displayMonth }}</p>
     </div>

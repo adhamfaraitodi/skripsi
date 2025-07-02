@@ -52,8 +52,8 @@ Route::prefix('superadmin')->middleware(['auth','authorized','verified'])->group
     Route::post('food',[FoodController::class,'store'])->name('food.store');
     Route::get('food/edit/{id}',[FoodController::class,'edit'])->name('food.edit');
     Route::post('food/update/{id}',[FoodController::class,'update'])->name('food.update');
-    Route::post('food/destroy/{id}',[FoodController::class,'destroy'])->name('food.destroy');
-    Route::post('food/restore/{id}',[FoodController::class,'restore'])->name('food.restore');
+    Route::post('food/destroy/{id}',[FoodController::class,'hide'])->name('food.destroy');
+    Route::post('food/restore/{id}',[FoodController::class,'show'])->name('food.restore');
     //food soft delete routes related
     Route::delete('food/remove/{id}',[FoodController::class,'remove'])->name('food.remove');
     Route::get('food/trash',[FoodController::class,'trash'])->name('food.trash.index');

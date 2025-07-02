@@ -3,7 +3,7 @@
 @section('content')
     <div class="p-6">
 
-        <x-table-data :name="'Trash Food Menu Items'">
+        <x-table-data :name="'New Order Management'">
             <x-slot name="column">
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">status order</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">order table</th>

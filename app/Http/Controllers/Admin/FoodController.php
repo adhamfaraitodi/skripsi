@@ -85,13 +85,13 @@ class FoodController extends Controller
         return redirect()->route('food.index')->with('success', 'Food item updated successfully');
     }
 
-    public function destroy($id){
+    public function hide($id){ 
         $data = Menu::findOrFail($id);
         $data->status=0;
         $data->save();
         return redirect()->back();
     }
-    public function restore($id){
+    public function show($id){
         $data = Menu::findOrFail($id);
         $data->status=1;
         $data->save();

@@ -11,8 +11,20 @@
                     $averagePerDay = $averagePerDay ?? 0;
                     $totalOrders = $totalOrders ?? 0;
                     $averageOrderValue = $averageOrderValue ?? 0;
+
+                    $monthYear = request('month_year');
+                    $displayMonth = \Carbon\Carbon::now()->format('F Y'); // Default
+
+                    if ($monthYear) {
+                        try {
+                            $displayMonth = \Carbon\Carbon::createFromFormat('m-Y', $monthYear)->format('F Y');
+                        } catch (Exception $e) {
+                            $displayMonth = \Carbon\Carbon::now()->format('F Y');
+                        }
+                    }
+
                     $reportData = [
-                        ['title' => 'Monthly Revenue', 'value' => $monthlyTotal, 'suffix' =>'/'. Carbon\Carbon::now()->format('F Y')],
+                        ['title' => 'Monthly Revenue', 'value' => $monthlyTotal, 'suffix' => '/' . $displayMonth],
                         ['title' => 'Average Daily Revenue', 'value' => $averagePerDay, 'suffix' => '/ Day'],
                         ['title' => 'Average Order Value', 'value' => $averageOrderValue, 'suffix' => '/ Transaction'],
                         ['title' => 'Total Orders', 'value' => $totalOrders, 'suffix' => 'Completed'],
